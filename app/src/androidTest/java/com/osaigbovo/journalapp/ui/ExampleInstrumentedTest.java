@@ -1,4 +1,4 @@
-package com.osaigbovo.journalapp.journalapp;
+package com.osaigbovo.journalapp.ui;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
