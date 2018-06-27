@@ -6,4 +6,41 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
+
+    <!-- Login -->
+    <string name="label_google_sign_in">Firebase + Google Sign In</string>
+    <string name="desc_google_sign_in">Use a Google Sign In credential to authenticate with Firebase.</string>
+    <string name="sign_in">Sign In</string>
+    <string name="create_account">Create Account</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="loading">Loading…</string>
+    <string name="signed_in">Signed In</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="google_status_fmt">Google User: %s</string>
+    <string name="google_title_text">Google Sign In</string>
+
+    <string name="firebase_status_fmt">Firebase User: %s</string>
+    <string name="firebase_user_management">Firebase User Management</string>
+
+
+    <!-- Bottom Navigation -->
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_calender">Calender</string>
+
+
+    <!-- TODO: HOME -->
+    <string name="text_home">HOME</string>
+
+
+    <!-- TODO: CALENDER -->
+    <string name="text_calender">CALENDER</string>
+
+    <!-- TODO: USER -->
+    <string name="action_user">User</string>
+
+
 </resources>

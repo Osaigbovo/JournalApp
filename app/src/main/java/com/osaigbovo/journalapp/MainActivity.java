@@ -1,57 +1,92 @@
 package com.osaigbovo.journalapp;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.osaigbovo.journalapp.ui.calender.CalenderFragment;
+import com.osaigbovo.journalapp.ui.home.HomeFragment;
+import com.osaigbovo.journalapp.utilities.GlideApp;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements
+        HomeFragment.OnFragmentInteractionListener, CalenderFragment.OnFragmentInteractionListener {
+
+    private BottomNavigationView mBottomNavigationView;
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = (@NonNull MenuItem item) -> {
+        switch (item.getItemId()) {
+            case R.id.navigation_home:
+                Fragment homeFragment = HomeFragment.newInstance();
+                launchFragment(homeFragment);
+                return true;
+            case R.id.navigation_calender:
+                Fragment calenderFragment = CalenderFragment.newInstance();
+                launchFragment(calenderFragment);
+                return true;
+        }
+        return false;
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setLogo(getDrawable(R.drawable.ic_home_black_24dp));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        // TODO New > Image Asset > Action Bar and Tab Icons
+        //getSupportActionBar().setIcon(getDrawable(R.drawable.ic_menu_camera));
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        mBottomNavigationView = findViewById(R.id.navigation);
+        mBottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        if (savedInstanceState == null) {
+            Fragment homeFragment = HomeFragment.newInstance();
+
+            setTitle("Home");
+
+            launchFragment(homeFragment);
+            // Selected item at app launch
+            mBottomNavigationView.getMenu().getItem(0).setChecked(true);
+        }
     }
 
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        MenuItem userItem = menu.findItem(R.id.action_user);
+
+        GlideApp
+                .with(this)
+                .asBitmap()
+                .circleCrop()
+                .placeholder(R.drawable.ic_round_account_circle_24px)
+                .load(R.drawable.user_image)
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        userItem.setIcon(new BitmapDrawable(getResources(), resource));
+                    }
+                });
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -68,36 +103,25 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_user) {
+            Toast.makeText(MainActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+    // TODO Add Comments
+    private void launchFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+    }
+
 }

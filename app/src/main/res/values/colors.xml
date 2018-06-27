@@ -3,4 +3,18 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_500">#9E9E9E</color>
+
+    <color name="one">#6a0883</color>
+    <color name="two">#d381e9</color>
+
+
+    <color name="light_status_bar_against_toolbar">#ffe8eaea</color>
+    <color name="light_status_bar_against_header_img">#ffe0e1e3</color>
+    <color name="immersive_status_bar">#33000000</color>
+    <color name="immersive_status_bar_dark">#66000000</color>
 </resources>
