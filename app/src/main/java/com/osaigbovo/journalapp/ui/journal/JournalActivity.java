@@ -1,15 +1,18 @@
 package com.osaigbovo.journalapp.ui.journal;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.osaigbovo.journalapp.R;
 
@@ -19,10 +22,12 @@ import java.util.Locale;
 
 public class JournalActivity extends AppCompatActivity {
 
-    private Spinner mSpinner;
     private DatePickerDialog picker;
-    private ImageButton mImageButton;
-    private TextView mTextView;
+    private TextView mTextViewDate, mTextVIewTime, mTextViewEntry;
+    private ImageButton mImageButtonDate, mImageButtonTime;
+    private FloatingActionButton mFab;
+
+    private int mYear, mMonth, mDay, mHour, mMinute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +43,22 @@ public class JournalActivity extends AppCompatActivity {
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
 
-        mTextView = findViewById(R.id.text_journal_date);
-        mImageButton = findViewById(R.id.imagebutton_date);
+        mTextViewDate = findViewById(R.id.text_journal_date);
+        mTextVIewTime = findViewById(R.id.text_journal_time);
+        mTextViewEntry = findViewById(R.id.text_journal_entry);
+        mImageButtonDate = findViewById(R.id.imagebutton_date);
+        mImageButtonTime = findViewById(R.id.imagebutton_time);
+        mFab = findViewById(R.id.fab_journal);
 
-        mImageButton.setOnClickListener(new View.OnClickListener() {
+        //mImageButtonTime.isSelected();
+
+        mImageButtonDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final Calendar cldr = Calendar.getInstance();
-                int day = cldr.get(Calendar.DAY_OF_MONTH);
-                int month = cldr.get(Calendar.MONTH);
-                int year = cldr.get(Calendar.YEAR);
+                mDay = cldr.get(Calendar.DAY_OF_MONTH);
+                mMonth = cldr.get(Calendar.MONTH);
+                mYear = cldr.get(Calendar.YEAR);
                 // date picker dialog
                 picker = new DatePickerDialog(JournalActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
@@ -72,14 +83,44 @@ public class JournalActivity extends AppCompatActivity {
 
                                 String s = stringBuilder.toString();
 
-                                mTextView.setText(s);
+                                mTextViewDate.setText(s);
                             }
 
-                        }, year, month, day);
+                        }, mYear, mMonth, mDay);
                 picker.show();
             }
         });
 
+        mImageButtonTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Get Current Time
+                final Calendar c = Calendar.getInstance();
+                mHour = c.get(Calendar.HOUR_OF_DAY);
+                mMinute = c.get(Calendar.MINUTE);
+
+                // Launch Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(JournalActivity.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+
+                                mTextVIewTime.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+            }
+        });
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(JournalActivity.this, "Submit Jounral Entry", Toast.LENGTH_LONG).show();
+            }
+        });
     }
+
 
 }
