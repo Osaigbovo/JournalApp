@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- NOTE: order is important (the first matching state(s) is what is rendered) -->
-    <item android:drawable="@drawable/ic_laugh_selected" android:state_focused="true" />
-    <item android:drawable="@drawable/ic_laugh_selected" android:state_selected="true" />
-    <item android:drawable="@drawable/ic_laugh_normal" />
+    <item android:drawable="@drawable/ic_laugh_selecteda" android:state_focused="true" />
+    <item android:drawable="@drawable/ic_laugh_selecteda" android:state_selected="true" />
+    <item android:drawable="@drawable/ic_laugh_normala" />
 </selector>
 

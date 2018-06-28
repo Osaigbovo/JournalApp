@@ -48,6 +48,12 @@
     <string name="new_journal_home">JOURNAL</string>
     <string name="new_journal_date">Select a date</string>
     <string name="new_journal_time">Select a time.</string>
+    <!--COntent Description for Image Button in Journal Entry -->
+    <string name="laugh">Laugh</string>
+    <string name="happy">Happy</string>
+    <string name="meh">Meh</string>
+    <string name="sad">Sad</string>
+    <string name="cry">Cry</string>
 
     <!-- TODO: USER -->
     <string name="action_user">User</string>

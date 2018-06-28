@@ -13,6 +13,9 @@
     <color name="two">#d381e9</color>
 
 
+    <color name="color_text">#6a0883</color>
+
+
     <color name="light_status_bar_against_toolbar">#ffe8eaea</color>
     <color name="light_status_bar_against_header_img">#ffe0e1e3</color>
     <color name="immersive_status_bar">#33000000</color>

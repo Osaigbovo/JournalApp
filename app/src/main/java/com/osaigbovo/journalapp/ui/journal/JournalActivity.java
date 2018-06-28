@@ -2,6 +2,7 @@ package com.osaigbovo.journalapp.ui.journal;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -20,14 +21,22 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class JournalActivity extends AppCompatActivity {
+public class JournalActivity extends AppCompatActivity implements View.OnClickListener {
 
     private DatePickerDialog picker;
-    private TextView mTextViewDate, mTextVIewTime, mTextViewEntry;
+    private TextView mTextViewDate, mTextVIewTime, mTextViewEntry,
+            mTextViewLaugh, mTextViewHappy, mTextViewMeh, mTextViewSad, mTextViewCry;
     private ImageButton mImageButtonDate, mImageButtonTime;
     private FloatingActionButton mFab;
 
+    private ImageButton[] btn = new ImageButton[5];
+    private ImageButton btn_unfocus;
+    private int[] btn_id
+            = {R.id.image_laugh, R.id.image_happy, R.id.image_meh, R.id.image_sad, R.id.image_cry};
+
     private int mYear, mMonth, mDay, mHour, mMinute;
+
+    private String stringEmotion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +55,15 @@ public class JournalActivity extends AppCompatActivity {
         mTextViewDate = findViewById(R.id.text_journal_date);
         mTextVIewTime = findViewById(R.id.text_journal_time);
         mTextViewEntry = findViewById(R.id.text_journal_entry);
+        mTextViewLaugh = findViewById(R.id.text_laugh);
+        mTextViewHappy = findViewById(R.id.text_happy);
+        mTextViewMeh = findViewById(R.id.text_meh);
+        mTextViewSad = findViewById(R.id.text_sad);
+        mTextViewCry = findViewById(R.id.text_cry);
+
         mImageButtonDate = findViewById(R.id.imagebutton_date);
         mImageButtonTime = findViewById(R.id.imagebutton_time);
         mFab = findViewById(R.id.fab_journal);
-
-        //mImageButtonTime.isSelected();
 
         mImageButtonDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,10 +130,99 @@ public class JournalActivity extends AppCompatActivity {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(JournalActivity.this, "Submit Jounral Entry", Toast.LENGTH_LONG).show();
+
+                Resources r = btn_unfocus.getResources();
+                //String image_name = btn_unfocus.toString();
+                //Drawable d = btn_unfocus.getDrawable();
+                //int imageid = getResources().getIdentifier(image_name, "drawable", getPackageName());
+                //String imageName = getResources().getResourceName(imageid);
+
+
+                Toast.makeText(JournalActivity.this, stringEmotion, Toast.LENGTH_LONG).show();
+
             }
         });
+
+        for (int i = 0; i < btn.length; i++) {
+            btn[i] = findViewById(btn_id[i]);
+            btn[i].setOnClickListener(this);
+        }
+        btn_unfocus = btn[0];
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.image_laugh:
+                setFocus(btn[0]);
+                break;
+            case R.id.image_happy:
+                setFocus(btn[1]);
+                break;
+            case R.id.image_meh:
+                setFocus(btn[2]);
+                break;
+            case R.id.image_sad:
+                setFocus(btn[3]);
+                break;
+            case R.id.image_cry:
+                setFocus(btn[4]);
+                break;
+        }
+    }
 
+    private void setFocus(ImageButton btn_focus) {
+
+        if (btn_focus.getId() == R.id.image_laugh) {
+            btn_focus.setImageDrawable(getDrawable(R.drawable.ic_laugh_selecteda));
+
+            btn[1].setImageDrawable(getDrawable(R.drawable.ic_happy_normala));
+            btn[2].setImageDrawable(getDrawable(R.drawable.ic_meh_normala));
+            btn[3].setImageDrawable(getDrawable(R.drawable.ic_sad_normala));
+            btn[4].setImageDrawable(getDrawable(R.drawable.ic_crying_normala));
+
+            stringEmotion = mTextViewLaugh.getText().toString();
+
+        } else if (btn_focus.getId() == R.id.image_happy) {
+            btn_focus.setImageDrawable(getDrawable(R.drawable.ic_happy_selecteda));
+
+            btn[0].setImageDrawable(getDrawable(R.drawable.ic_laugh_normala));
+            btn[2].setImageDrawable(getDrawable(R.drawable.ic_meh_normala));
+            btn[3].setImageDrawable(getDrawable(R.drawable.ic_sad_normala));
+            btn[4].setImageDrawable(getDrawable(R.drawable.ic_crying_normala));
+
+            stringEmotion = mTextViewHappy.getText().toString();
+
+        } else if (btn_focus.getId() == R.id.image_meh) {
+            btn_focus.setImageDrawable(getDrawable(R.drawable.ic_meh_selecteda));
+
+            btn[0].setImageDrawable(getDrawable(R.drawable.ic_laugh_normala));
+            btn[1].setImageDrawable(getDrawable(R.drawable.ic_happy_normala));
+            btn[3].setImageDrawable(getDrawable(R.drawable.ic_sad_normala));
+            btn[4].setImageDrawable(getDrawable(R.drawable.ic_crying_normala));
+
+            stringEmotion = mTextViewMeh.getText().toString();
+
+        } else if (btn_focus.getId() == R.id.image_sad) {
+            btn_focus.setImageDrawable(getDrawable(R.drawable.ic_sad_selecteda));
+
+            btn[0].setImageDrawable(getDrawable(R.drawable.ic_laugh_normala));
+            btn[1].setImageDrawable(getDrawable(R.drawable.ic_happy_normala));
+            btn[2].setImageDrawable(getDrawable(R.drawable.ic_meh_normala));
+            btn[4].setImageDrawable(getDrawable(R.drawable.ic_crying_normala));
+
+            stringEmotion = mTextViewSad.getText().toString();
+
+        } else if (btn_focus.getId() == R.id.image_cry) {
+            btn_focus.setImageDrawable(getDrawable(R.drawable.ic_crying_selecteda));
+
+            btn[0].setImageDrawable(getDrawable(R.drawable.ic_laugh_normala));
+            btn[1].setImageDrawable(getDrawable(R.drawable.ic_happy_normala));
+            btn[2].setImageDrawable(getDrawable(R.drawable.ic_meh_normala));
+            btn[3].setImageDrawable(getDrawable(R.drawable.ic_sad_normala));
+
+            stringEmotion = mTextViewCry.getText().toString();
+        }
+        this.btn_unfocus = btn_focus;
+    }
 }
