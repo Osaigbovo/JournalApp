@@ -2,12 +2,12 @@ package com.osaigbovo.journalapp.ui.journal;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
@@ -36,7 +36,7 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
 
     private int mYear, mMonth, mDay, mHour, mMinute;
 
-    private String stringEmotion;
+    private String stringDate, stringTime, stringEntry, stringEmotion, stringImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,15 +131,8 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View view) {
 
-                Resources r = btn_unfocus.getResources();
-                //String image_name = btn_unfocus.toString();
-                //Drawable d = btn_unfocus.getDrawable();
-                //int imageid = getResources().getIdentifier(image_name, "drawable", getPackageName());
-                //String imageName = getResources().getResourceName(imageid);
-
-
-                Toast.makeText(JournalActivity.this, stringEmotion, Toast.LENGTH_LONG).show();
-
+                //Toast.makeText(JournalActivity.this, stringEmotion + stringImage, Toast.LENGTH_LONG).show();
+                getJournal();
             }
         });
 
@@ -182,6 +175,7 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             btn[4].setImageDrawable(getDrawable(R.drawable.ic_crying_normala));
 
             stringEmotion = mTextViewLaugh.getText().toString();
+            stringImage = "R.drawable.ic_laugh_selecteda";
 
         } else if (btn_focus.getId() == R.id.image_happy) {
             btn_focus.setImageDrawable(getDrawable(R.drawable.ic_happy_selecteda));
@@ -192,6 +186,7 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             btn[4].setImageDrawable(getDrawable(R.drawable.ic_crying_normala));
 
             stringEmotion = mTextViewHappy.getText().toString();
+            stringImage = "R.drawable.ic_happy_selecteda";
 
         } else if (btn_focus.getId() == R.id.image_meh) {
             btn_focus.setImageDrawable(getDrawable(R.drawable.ic_meh_selecteda));
@@ -202,6 +197,7 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             btn[4].setImageDrawable(getDrawable(R.drawable.ic_crying_normala));
 
             stringEmotion = mTextViewMeh.getText().toString();
+            stringImage = "R.drawable.ic_meh_selecteda";
 
         } else if (btn_focus.getId() == R.id.image_sad) {
             btn_focus.setImageDrawable(getDrawable(R.drawable.ic_sad_selecteda));
@@ -212,6 +208,7 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             btn[4].setImageDrawable(getDrawable(R.drawable.ic_crying_normala));
 
             stringEmotion = mTextViewSad.getText().toString();
+            stringImage = "R.drawable.ic_sad_selecteda";
 
         } else if (btn_focus.getId() == R.id.image_cry) {
             btn_focus.setImageDrawable(getDrawable(R.drawable.ic_crying_selecteda));
@@ -222,7 +219,36 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             btn[3].setImageDrawable(getDrawable(R.drawable.ic_sad_normala));
 
             stringEmotion = mTextViewCry.getText().toString();
+            stringImage = "R.drawable.ic_crying_selecteda";
         }
         this.btn_unfocus = btn_focus;
+    }
+
+    private void getJournal() {
+
+        stringDate = mTextViewDate.getText().toString();
+        stringTime = mTextVIewTime.getText().toString();
+        stringEntry = mTextViewEntry.getText().toString();
+        //stringImage;
+        //stringEmotion;
+
+        if (TextUtils.isEmpty(stringDate)) {
+            Toast.makeText(JournalActivity.this, "Select a date!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (TextUtils.isEmpty(stringTime)) {
+            Toast.makeText(JournalActivity.this, "Select a Time!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (TextUtils.isEmpty(stringEmotion)) {
+            Toast.makeText(JournalActivity.this, "Emoticon your day!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (TextUtils.isEmpty(stringEntry)) {
+            Toast.makeText(JournalActivity.this, "How was your day?", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
     }
 }

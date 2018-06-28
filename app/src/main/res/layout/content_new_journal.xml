@@ -5,302 +5,313 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:cardElevation="8dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <android.support.constraint.ConstraintLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:cardElevation="8dp">
 
-            <ImageButton
-                android:id="@+id/imagebutton_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="24dp"
-                android:background="@null"
-                android:contentDescription="@string/new_journal_date"
-                android:elevation="3dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintStart_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_calendar_black_24dp" />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/text_journal_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:contentDescription="@string/new_journal_time"
-                android:fontFamily="sans-serif"
-                android:text="@string/new_journal_date"
-                android:textSize="14sp"
-                android:typeface="normal"
-                app:layout_constraintBottom_toBottomOf="@+id/imagebutton_date"
-                app:layout_constraintStart_toEndOf="@+id/imagebutton_date"
-                app:layout_constraintTop_toTopOf="@+id/imagebutton_date" />
+                <TextView
+                    android:id="@+id/text_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/title"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:typeface="normal"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/imagebutton_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="24dp"
-                android:background="@null"
-                android:elevation="3dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toStartOf="@+id/text_journal_time"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_round__time_24px" />
+                <ImageButton
+                    android:id="@+id/imagebutton_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@null"
+                    android:contentDescription="@string/new_journal_date"
+                    android:elevation="3dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/text_title"
+                    app:srcCompat="@drawable/ic_calendar_black_24dp" />
 
-            <TextView
-                android:id="@+id/text_journal_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif"
-                android:text="@string/new_journal_time"
-                android:textSize="14sp"
-                android:typeface="normal"
-                app:layout_constraintBottom_toBottomOf="@+id/imagebutton_time"
-                app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toTopOf="@+id/imagebutton_time" />
+                <TextView
+                    android:id="@+id/text_journal_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:contentDescription="@string/new_journal_time"
+                    android:fontFamily="sans-serif"
+                    android:hint="@string/new_journal_date"
+                    android:textSize="14sp"
+                    android:typeface="normal"
+                    app:layout_constraintBottom_toBottomOf="@+id/imagebutton_date"
+                    app:layout_constraintStart_toEndOf="@+id/imagebutton_date"
+                    app:layout_constraintTop_toTopOf="@+id/imagebutton_date" />
 
-            <android.support.constraint.Guideline
-                android:id="@+id/guideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_begin="16dp" />
+                <ImageButton
+                    android:id="@+id/imagebutton_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@null"
+                    android:elevation="3dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toStartOf="@+id/text_journal_time"
+                    app:layout_constraintTop_toBottomOf="@+id/text_title"
+                    app:srcCompat="@drawable/ic_round__time_24px" />
 
-            <android.support.constraint.Guideline
-                android:id="@+id/guideline2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_end="16dp" />
+                <TextView
+                    android:id="@+id/text_journal_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif"
+                    android:hint="@string/new_journal_time"
+                    android:textSize="14sp"
+                    android:typeface="normal"
+                    app:layout_constraintBottom_toBottomOf="@+id/imagebutton_time"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                    app:layout_constraintTop_toTopOf="@+id/imagebutton_time" />
 
-            <ImageButton
-                android:id="@+id/image_laugh"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="8dp"
-                android:background="@null"
-                android:contentDescription="@string/laugh"
-                android:scaleType="centerCrop"
-                app:layout_constraintDimensionRatio="w,1:1"
-                app:layout_constraintEnd_toStartOf="@+id/image_happy"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/guideline"
-                app:layout_constraintStart_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toTopOf="@+id/image_happy"
-                app:srcCompat="@drawable/ic_laugh_normala" />
+                <android.support.constraint.Guideline
+                    android:id="@+id/guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="16dp" />
 
-            <TextView
-                android:id="@+id/text_laugh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif"
-                android:text="@string/laugh"
-                android:textAlignment="center"
-                android:textColor="@color/color_text"
-                android:textSize="14sp"
-                android:typeface="normal"
-                app:layout_constraintEnd_toEndOf="@+id/image_laugh"
-                app:layout_constraintStart_toStartOf="@+id/image_laugh"
-                app:layout_constraintTop_toBottomOf="@+id/image_laugh" />
+                <android.support.constraint.Guideline
+                    android:id="@+id/guideline2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="16dp" />
 
-            <ImageButton
-                android:id="@+id/image_happy"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@null"
-                android:contentDescription="@string/happy"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toStartOf="@+id/image_meh"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/image_laugh"
-                app:layout_constraintTop_toTopOf="@+id/image_meh"
-                app:srcCompat="@drawable/ic_happy_normala" />
+                <ImageButton
+                    android:id="@+id/image_laugh"
+                    style="@style/JournalButton"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/laugh"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintDimensionRatio="w,1:1"
+                    app:layout_constraintEnd_toStartOf="@+id/image_happy"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/guideline"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toTopOf="@+id/image_happy"
+                    app:srcCompat="@drawable/ic_laugh_normala" />
 
-            <TextView
-                android:id="@+id/text_happy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif"
-                android:text="@string/happy"
-                android:textAlignment="center"
-                android:textColor="@color/color_text"
-                android:textSize="14sp"
-                android:typeface="normal"
-                app:layout_constraintEnd_toEndOf="@+id/image_happy"
-                app:layout_constraintStart_toStartOf="@+id/image_happy"
-                app:layout_constraintTop_toBottomOf="@+id/image_happy" />
+                <TextView
+                    android:id="@+id/text_laugh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/laugh"
+                    android:textAlignment="center"
+                    android:textColor="@color/color_text"
+                    android:textSize="14sp"
+                    android:typeface="normal"
+                    app:layout_constraintEnd_toEndOf="@+id/image_laugh"
+                    app:layout_constraintStart_toStartOf="@+id/image_laugh"
+                    app:layout_constraintTop_toBottomOf="@+id/image_laugh" />
 
-            <ImageButton
-                android:id="@+id/image_meh"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@null"
-                android:contentDescription="@string/meh"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toStartOf="@+id/image_sad"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/image_happy"
-                app:layout_constraintTop_toTopOf="@+id/image_sad"
-                app:srcCompat="@drawable/ic_meh_normala" />
+                <ImageButton
+                    android:id="@+id/image_happy"
+                    style="@style/JournalButton"
+                    android:contentDescription="@string/happy"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toStartOf="@+id/image_meh"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/image_laugh"
+                    app:layout_constraintTop_toTopOf="@+id/image_meh"
+                    app:srcCompat="@drawable/ic_happy_normala" />
 
-            <TextView
-                android:id="@+id/text_meh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif"
-                android:text="@string/meh"
-                android:textAlignment="center"
-                android:textColor="@color/color_text"
-                android:textSize="14sp"
-                android:typeface="normal"
-                app:layout_constraintEnd_toEndOf="@+id/image_meh"
-                app:layout_constraintStart_toStartOf="@+id/image_meh"
-                app:layout_constraintTop_toBottomOf="@+id/image_meh" />
+                <TextView
+                    android:id="@+id/text_happy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/happy"
+                    android:textAlignment="center"
+                    android:textColor="@color/color_text"
+                    android:textSize="14sp"
+                    android:typeface="normal"
+                    app:layout_constraintEnd_toEndOf="@+id/image_happy"
+                    app:layout_constraintStart_toStartOf="@+id/image_happy"
+                    app:layout_constraintTop_toBottomOf="@+id/image_happy" />
 
-            <ImageButton
-                android:id="@+id/image_sad"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@null"
-                android:contentDescription="@string/sad"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toStartOf="@+id/image_cry"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/image_meh"
-                app:layout_constraintTop_toTopOf="@+id/image_cry"
-                app:srcCompat="@drawable/ic_sad_normala" />
+                <ImageButton
+                    android:id="@+id/image_meh"
+                    style="@style/JournalButton"
+                    android:contentDescription="@string/meh"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toStartOf="@+id/image_sad"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/image_happy"
+                    app:layout_constraintTop_toTopOf="@+id/image_sad"
+                    app:srcCompat="@drawable/ic_meh_normala" />
 
-            <TextView
-                android:id="@+id/text_sad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif"
-                android:text="@string/sad"
-                android:textAlignment="center"
-                android:textColor="@color/color_text"
-                android:textSize="14sp"
-                android:typeface="normal"
-                app:layout_constraintEnd_toEndOf="@+id/image_sad"
-                app:layout_constraintStart_toStartOf="@+id/image_sad"
-                app:layout_constraintTop_toBottomOf="@+id/image_sad" />
+                <TextView
+                    android:id="@+id/text_meh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/meh"
+                    android:textAlignment="center"
+                    android:textColor="@color/color_text"
+                    android:textSize="14sp"
+                    android:typeface="normal"
+                    app:layout_constraintEnd_toEndOf="@+id/image_meh"
+                    app:layout_constraintStart_toStartOf="@+id/image_meh"
+                    app:layout_constraintTop_toBottomOf="@+id/image_meh" />
 
-            <ImageButton
-                android:id="@+id/image_cry"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="24dp"
-                android:background="@null"
-                android:contentDescription="@string/cry"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/image_sad"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider"
-                app:srcCompat="@drawable/ic_crying_normala" />
+                <ImageButton
+                    android:id="@+id/image_sad"
+                    style="@style/JournalButton"
+                    android:contentDescription="@string/sad"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toStartOf="@+id/image_cry"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/image_meh"
+                    app:layout_constraintTop_toTopOf="@+id/image_cry"
+                    app:srcCompat="@drawable/ic_sad_normala" />
 
-            <TextView
-                android:id="@+id/text_cry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif"
-                android:text="@string/cry"
-                android:textAlignment="center"
-                android:textColor="@color/color_text"
-                android:textSize="14sp"
-                android:typeface="normal"
-                app:layout_constraintEnd_toEndOf="@+id/image_cry"
-                app:layout_constraintStart_toStartOf="@+id/image_cry"
-                app:layout_constraintTop_toBottomOf="@+id/image_cry" />
+                <TextView
+                    android:id="@+id/text_sad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/sad"
+                    android:textAlignment="center"
+                    android:textColor="@color/color_text"
+                    android:textSize="14sp"
+                    android:typeface="normal"
+                    app:layout_constraintEnd_toEndOf="@+id/image_sad"
+                    app:layout_constraintStart_toStartOf="@+id/image_sad"
+                    app:layout_constraintTop_toBottomOf="@+id/image_sad" />
 
-            <View
-                android:id="@+id/view_divider"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:background="@color/colorAccent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imagebutton_date" />
+                <ImageButton
+                    android:id="@+id/image_cry"
+                    style="@style/JournalButton"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="24dp"
+                    android:contentDescription="@string/cry"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/image_sad"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider"
+                    app:srcCompat="@drawable/ic_crying_normala" />
 
-            <View
-                android:id="@+id/view_divider2"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:background="@color/colorAccent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_happy" />
+                <TextView
+                    android:id="@+id/text_cry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/cry"
+                    android:textAlignment="center"
+                    android:textColor="@color/color_text"
+                    android:textSize="14sp"
+                    android:typeface="normal"
+                    app:layout_constraintEnd_toEndOf="@+id/image_cry"
+                    app:layout_constraintStart_toStartOf="@+id/image_cry"
+                    app:layout_constraintTop_toBottomOf="@+id/image_cry" />
 
-            <EditText
-                android:id="@+id/text_journal_entry"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/edit_text_background"
-                android:ems="10"
-                android:inputType="text|textMultiLine"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider2" />
+                <View
+                    android:id="@+id/view_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@color/colorAccent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imagebutton_date" />
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_journal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:clickable="true"
-                android:tint="@color/one"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_journal_entry"
-                app:srcCompat="@drawable/ic_round_check_24px" />
+                <View
+                    android:id="@+id/view_divider2"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@color/colorAccent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_happy" />
 
-        </android.support.constraint.ConstraintLayout>
+                <EditText
+                    android:id="@+id/text_journal_entry"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/edit_text_background"
+                    android:ems="10"
+                    android:inputType="text|textMultiLine"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider2" />
 
-    </android.support.v7.widget.CardView>
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_journal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    android:clickable="true"
+                    android:tint="@color/one"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_journal_entry"
+                    app:srcCompat="@drawable/ic_round_check_24px" />
 
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
