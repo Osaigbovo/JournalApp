@@ -6,15 +6,10 @@
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_home" />
 
-    <!-- <item
-         android:id="@+id/navigation_dashboard"
-         android:icon="@drawable/ic_dashboard_black_24dp"
-         android:title="@string/title_dashboard" />-->
-
     <!-- TODO CHANGE ICON TO CALENDER-->
     <item
         android:id="@+id/navigation_calender"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_calendar_black_24dp"
         android:title="@string/title_calender" />
 
 </menu>

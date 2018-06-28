@@ -35,12 +35,21 @@
     <!-- TODO: HOME -->
     <string name="text_home">HOME</string>
 
+    <string name="journal_date">Monday, 25 June</string>
+    <string name="journal_image">Emotion</string>
+    <string name="journal_time">13:13</string>
+    <string name="journal_feeling">GOOD</string>
+    <string name="journal_text">What are your likely first 5 steps from your idea for an app?</string>
 
     <!-- TODO: CALENDER -->
     <string name="text_calender">CALENDER</string>
 
+    <!-- TODO: NEW JOURNAL ENTRY -->
+    <string name="new_journal_home">JOURNAL</string>
+    <string name="new_journal_date">Select a date</string>
+    <string name="new_journal_time">Select a time.</string>
+
     <!-- TODO: USER -->
     <string name="action_user">User</string>
-
 
 </resources>

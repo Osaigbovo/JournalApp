@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--TODO change icon-->
+    <!--TODO change icon black or white depending on app theme-->
     <item
         android:id="@+id/action_user"
         android:orderInCategory="1"

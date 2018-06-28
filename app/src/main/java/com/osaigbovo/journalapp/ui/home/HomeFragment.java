@@ -1,6 +1,7 @@
 package com.osaigbovo.journalapp.ui.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,9 +10,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.osaigbovo.journalapp.R;
+import com.osaigbovo.journalapp.ui.journal.JournalActivity;
 
 // TODO Class t display all the journals add/create, delete/remove, read, update
 public class HomeFragment extends Fragment {
@@ -58,10 +59,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(getActivity(), "FAB is clicked", Toast.LENGTH_LONG).show();
-
-                /*Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
-                startActivity(intent);*/
+                // Create new Journal entry.
+                Intent intent = new Intent(getContext(), JournalActivity.class);
+                startActivity(intent);
             }
         });
 
