@@ -13,8 +13,8 @@ public abstract class ViewModelModule {
 
     /*@Binds
     @IntoMap
-    @ViewModelKey(TheatersViewModel.class)
-    abstract ViewModel bindsTheatersViewModel(TheatersViewModel theatersViewModel);
+    @ViewModelKey(JournalViewModel.class)
+    abstract ViewModel bindsTheatersViewModel(JournalViewModel theatersViewModel);
 
     @Binds
     @IntoMap

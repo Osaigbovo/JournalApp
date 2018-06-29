@@ -42,6 +42,10 @@
     <string name="journal_text">What are your likely first 5 steps from your idea for an app?</string>
     <string name="journal_menu">Item Menu</string>
 
+    <string name="menu_edit">Edit</string>
+    <string name="menu_delete">Delete</string>
+
+
     <!-- TODO: CALENDER -->
     <string name="text_calender">CALENDER</string>
 
@@ -58,5 +62,10 @@
 
     <!-- TODO: USER -->
     <string name="action_user">User</string>
+
+    <!-- TODO: MENU -->
+    <string name="user_image">User Image</string>
+    <string name="user_fullname">Osaigbovo Odiase</string>
+    <string name="signout">Sign Out</string>
 
 </resources>

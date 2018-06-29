@@ -5,22 +5,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.osaigbovo.journalapp.R;
 
-// TODO Class to display the calender with all the Journal for a month
-public class CalenderFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import java.util.ArrayList;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+import sun.bob.mcalendarview.MCalendarView;
+import sun.bob.mcalendarview.listeners.OnDateClickListener;
+import sun.bob.mcalendarview.vo.DateData;
+
+public class CalenderFragment extends Fragment {
+
+    private MCalendarView calendarView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -28,7 +29,6 @@ public class CalenderFragment extends Fragment {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static CalenderFragment newInstance() {
         CalenderFragment fragment = new CalenderFragment();
         Bundle args = new Bundle();
@@ -39,20 +39,42 @@ public class CalenderFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calender, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_calender, container, false);
+
+        calendarView = rootView.findViewById(R.id.calendarView);
+
+        ArrayList<DateData> dates = new ArrayList<>();
+        dates.add(new DateData(2018, 04, 26));
+        dates.add(new DateData(2018, 04, 27));
+
+        // Mark multiple dates with this code.
+        for (int i = 0; i < dates.size(); i++) {
+            calendarView
+                    .markDate(dates.get(i).getYear(), dates.get(i).getMonth(), dates.get(i).getDay());
+
+            /*mCalendarView
+                    .markDate(new DateData(2016, 3, 1)
+                            .setMarkStyle(new MarkStyle(MarkStyle.BACKGROUND, Color.GREEN)));*/
+        }
+        // Get all marked dates.
+        Log.d("marked dates:-", "" + calendarView.getMarkedDates());
+
+        calendarView.setOnDateClickListener(new OnDateClickListener() {
+            @Override
+            public void onDateClick(View view, DateData date) {
+                Toast.makeText(getContext(), String.format("%d-%d", date.getMonth(), date.getDay()),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return rootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -76,18 +98,7 @@ public class CalenderFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

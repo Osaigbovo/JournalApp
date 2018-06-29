@@ -35,9 +35,7 @@ public class SignInActivity extends BaseActivity implements
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
 
-    // [START declare_auth]
     private FirebaseAuth mAuth;
-    // [END declare_auth]
 
     private GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;
@@ -71,10 +69,7 @@ public class SignInActivity extends BaseActivity implements
         // [END config_signin]
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
     }
 
     // [START on_start_check_user]
@@ -113,9 +108,7 @@ public class SignInActivity extends BaseActivity implements
     // [START auth_with_google]
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-        // [START_EXCLUDE silent]
         showProgressDialog();
-        // [END_EXCLUDE]
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -186,10 +179,9 @@ public class SignInActivity extends BaseActivity implements
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);*/
 
-            // TODO Successful SignIn Go to HomeActivity , Pass in Extras
             Intent homeActivityIntent = new Intent(SignInActivity.this, MainActivity.class);
+            homeActivityIntent.putExtra("User", user);
             startActivity(homeActivityIntent);
-
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);

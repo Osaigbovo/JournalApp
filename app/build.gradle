@@ -61,7 +61,7 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:${versions.room}"
 
     // Paging
-    implementation "android.arch.paging:runtime:1.0.0"
+    implementation "android.arch.paging:runtime:1.0.1"
 
     // ViewModel, LiveData and Lifecycle
     implementation "android.arch.lifecycle:extensions:${versions.lifecycle}"
@@ -82,6 +82,9 @@ dependencies {
 
     // Firebase JobDispatcher
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+
+    //
+    implementation 'sun.bob:mcalendarview:1.0.0'
 
     // Testing
     testImplementation 'junit:junit:4.12'

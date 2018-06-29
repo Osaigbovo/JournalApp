@@ -2,6 +2,7 @@ package com.osaigbovo.journalapp.ui.journal;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -15,11 +16,20 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.osaigbovo.journalapp.MainActivity;
 import com.osaigbovo.journalapp.R;
+import com.osaigbovo.journalapp.data.models.Journal;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class JournalActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -38,6 +48,10 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
 
     private String stringDate, stringTime, stringEntry, stringEmotion, stringImage;
 
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mCalenderDatabaseReference;
+    private ValueEventListener valueEventListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +59,9 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
 
         Toolbar toolbar = findViewById(R.id.toolbar_journal);
         setSupportActionBar(toolbar);
+
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mCalenderDatabaseReference = mFirebaseDatabase.getReference();
 
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
@@ -68,70 +85,20 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
         mImageButtonDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Calendar cldr = Calendar.getInstance();
-                mDay = cldr.get(Calendar.DAY_OF_MONTH);
-                mMonth = cldr.get(Calendar.MONTH);
-                mYear = cldr.get(Calendar.YEAR);
-                // date picker dialog
-                picker = new DatePickerDialog(JournalActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-                                cldr.set(year, monthOfYear, dayOfMonth);
-
-                                SimpleDateFormat simpleDateFormat
-                                        = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
-
-                                StringBuilder stringBuilder = new StringBuilder();
-
-                                stringBuilder
-                                        .append(cldr.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH))
-                                        .append(",  ")
-                                        .append(cldr.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH))
-                                        .append(" ")
-                                        .append(cldr.get(Calendar.DAY_OF_MONTH))
-                                        .append("   ")
-                                        .append(cldr.get(Calendar.YEAR));
-
-                                String s = stringBuilder.toString();
-
-                                mTextViewDate.setText(s);
-                            }
-
-                        }, mYear, mMonth, mDay);
-                picker.show();
+                getDate();
             }
         });
 
         mImageButtonTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                // Get Current Time
-                final Calendar c = Calendar.getInstance();
-                mHour = c.get(Calendar.HOUR_OF_DAY);
-                mMinute = c.get(Calendar.MINUTE);
-
-                // Launch Time Picker Dialog
-                TimePickerDialog timePickerDialog = new TimePickerDialog(JournalActivity.this,
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-
-                                mTextVIewTime.setText(hourOfDay + ":" + minute);
-                            }
-                        }, mHour, mMinute, false);
-                timePickerDialog.show();
+                getTime();
             }
         });
 
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //Toast.makeText(JournalActivity.this, stringEmotion + stringImage, Toast.LENGTH_LONG).show();
                 getJournal();
             }
         });
@@ -175,7 +142,7 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             btn[4].setImageDrawable(getDrawable(R.drawable.ic_crying_normala));
 
             stringEmotion = mTextViewLaugh.getText().toString();
-            stringImage = "R.drawable.ic_laugh_selecteda";
+            stringImage = "R.drawable.ic_laugh_selecteda.png";
 
         } else if (btn_focus.getId() == R.id.image_happy) {
             btn_focus.setImageDrawable(getDrawable(R.drawable.ic_happy_selecteda));
@@ -186,7 +153,7 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             btn[4].setImageDrawable(getDrawable(R.drawable.ic_crying_normala));
 
             stringEmotion = mTextViewHappy.getText().toString();
-            stringImage = "R.drawable.ic_happy_selecteda";
+            stringImage = "R.drawable.ic_happy_selecteda.png";
 
         } else if (btn_focus.getId() == R.id.image_meh) {
             btn_focus.setImageDrawable(getDrawable(R.drawable.ic_meh_selecteda));
@@ -197,7 +164,7 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             btn[4].setImageDrawable(getDrawable(R.drawable.ic_crying_normala));
 
             stringEmotion = mTextViewMeh.getText().toString();
-            stringImage = "R.drawable.ic_meh_selecteda";
+            stringImage = "R.drawable.ic_meh_selecteda.png";
 
         } else if (btn_focus.getId() == R.id.image_sad) {
             btn_focus.setImageDrawable(getDrawable(R.drawable.ic_sad_selecteda));
@@ -208,7 +175,7 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             btn[4].setImageDrawable(getDrawable(R.drawable.ic_crying_normala));
 
             stringEmotion = mTextViewSad.getText().toString();
-            stringImage = "R.drawable.ic_sad_selecteda";
+            stringImage = "R.drawable.ic_sad_selecteda.png";
 
         } else if (btn_focus.getId() == R.id.image_cry) {
             btn_focus.setImageDrawable(getDrawable(R.drawable.ic_crying_selecteda));
@@ -219,7 +186,7 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             btn[3].setImageDrawable(getDrawable(R.drawable.ic_sad_normala));
 
             stringEmotion = mTextViewCry.getText().toString();
-            stringImage = "R.drawable.ic_crying_selecteda";
+            stringImage = "R.drawable.ic_crying_selecteda.png";
         }
         this.btn_unfocus = btn_focus;
     }
@@ -229,8 +196,6 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
         stringDate = mTextViewDate.getText().toString();
         stringTime = mTextVIewTime.getText().toString();
         stringEntry = mTextViewEntry.getText().toString();
-        //stringImage;
-        //stringEmotion;
 
         if (TextUtils.isEmpty(stringDate)) {
             Toast.makeText(JournalActivity.this, "Select a date!", Toast.LENGTH_LONG).show();
@@ -249,6 +214,107 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             return;
         }
 
+        mCalenderDatabaseReference.child("journal").addListenerForSingleValueEvent(
+                valueEventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // write new journal entry
+                        writeNewJournal(stringDate, stringTime, stringEntry, stringImage, stringEmotion);
 
+                        //Display a toast, and reset the fields.
+                        Toast.makeText(JournalActivity.this, "Journal...",
+                                Toast.LENGTH_SHORT).show();
+
+                        // successful entry - return to main activity
+                        Intent mainActivityIntent = new
+                                Intent(JournalActivity.this, MainActivity.class);
+                        startActivity(mainActivityIntent);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                        Toast.makeText(JournalActivity.this, "There was an error.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        if (valueEventListener != null) {
+            mCalenderDatabaseReference.removeEventListener(valueEventListener);
+            valueEventListener = null;
+        }
+    }
+
+
+    private void writeNewJournal(String stringDate, String stringTime,
+                                 String stringEntry, String stringImage, String stringEmotion) {
+
+        String key = mCalenderDatabaseReference.child("journal").push().getKey();
+        Journal mJournal = new Journal(stringDate, stringTime, stringEntry, stringImage, stringEmotion);
+        Map<String, Object> postValues = mJournal.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/journal/" + key, postValues);
+        mCalenderDatabaseReference.updateChildren(childUpdates);
+    }
+
+    private void getDate() {
+        final Calendar cldr = Calendar.getInstance();
+        mDay = cldr.get(Calendar.DAY_OF_MONTH);
+        mMonth = cldr.get(Calendar.MONTH);
+        mYear = cldr.get(Calendar.YEAR);
+        // date picker dialog
+        picker = new DatePickerDialog(JournalActivity.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                        cldr.set(year, monthOfYear, dayOfMonth);
+
+                        SimpleDateFormat simpleDateFormat
+                                = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
+
+                        StringBuilder stringBuilder = new StringBuilder();
+
+                        stringBuilder
+                                .append(cldr.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH))
+                                .append(",  ")
+                                .append(cldr.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH))
+                                .append(" ")
+                                .append(cldr.get(Calendar.DAY_OF_MONTH))
+                                .append("   ")
+                                .append(cldr.get(Calendar.YEAR));
+
+                        String s = stringBuilder.toString();
+
+                        mTextViewDate.setText(s);
+                    }
+
+                }, mYear, mMonth, mDay);
+        picker.show();
+    }
+
+    private void getTime() {
+        // Get Current Time
+        final Calendar c = Calendar.getInstance();
+        mHour = c.get(Calendar.HOUR_OF_DAY);
+        mMinute = c.get(Calendar.MINUTE);
+
+        // Launch Time Picker Dialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(JournalActivity.this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                          int minute) {
+                        mTextVIewTime.setText(hourOfDay + ":" + minute);
+                    }
+                }, mHour, mMinute, false);
+        timePickerDialog.show();
+    }
+
 }

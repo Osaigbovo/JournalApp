@@ -16,11 +16,11 @@
 
         <ImageView
             android:id="@+id/image_emotion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/JournalButton"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:contentDescription="@string/journal_image"
+            android:scaleType="centerCrop"
             android:tint="@android:color/holo_orange_dark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,7 +37,7 @@
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/menu" />
+            app:srcCompat="@drawable/ic_menu_popup" />
 
         <TextView
             android:id="@+id/text_date"
