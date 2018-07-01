@@ -2,9 +2,11 @@ package com.osaigbovo.journalapp.ui.home;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import com.osaigbovo.journalapp.R;
+import com.osaigbovo.journalapp.models.Home;
 
 import java.util.List;
 
@@ -12,7 +14,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
     private final static String TAG = "Adapter";
     private List<Home> mhomeList;
+    private OnItemSelectedListener listener;
 
+    public HomeAdapter(OnItemSelectedListener listener) {
+        this.listener = listener;
+    }
 
     void setHomeList(final List<Home> homeList) {
         mhomeList = homeList;
@@ -34,5 +40,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
     @Override
     public int getItemCount() {
         return mhomeList == null ? 0 : mhomeList.size();
+    }
+
+    public interface OnItemSelectedListener {
+
+        void onSelected(Home home);
+
+        void onMenuAction(Home home, MenuItem item);
     }
 }

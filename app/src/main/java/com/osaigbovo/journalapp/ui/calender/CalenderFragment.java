@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.osaigbovo.journalapp.R;
-import com.osaigbovo.journalapp.data.models.CalenderDates;
+import com.osaigbovo.journalapp.models.CalenderDates;
 
 import java.util.ArrayList;
 

@@ -12,7 +12,7 @@ import android.support.annotation.Nullable;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.osaigbovo.journalapp.data.models.CalenderDates;
+import com.osaigbovo.journalapp.models.CalenderDates;
 
 import javax.inject.Inject;
 

@@ -20,9 +20,4 @@ public class AppModule {
     Context provideContext(Application application) {
         return application.getApplicationContext();
     }
-
-//    @Singleton
-//    @Provides
-//    UpcomingDao provideComingDao(CinemaDatabase db) {  return db.upcomingDao();}*/
-
 }

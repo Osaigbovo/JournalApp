@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
 import com.osaigbovo.journalapp.MainActivity;
 import com.osaigbovo.journalapp.R;
-import com.osaigbovo.journalapp.data.models.CalenderDates;
+import com.osaigbovo.journalapp.models.CalenderDates;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -210,8 +210,7 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             Toast.makeText(JournalActivity.this, "How was your day?", Toast.LENGTH_LONG).show();
             return;
         }
-        mFab.setVisibility(View.INVISIBLE);
-
+        mFab.setVisibility(View.GONE);
         LiveData<DataSnapshot> liveData = journalViewModel.getDataSnapshotLiveData();
         liveData.observe(this, new Observer<DataSnapshot>() {
             @Override

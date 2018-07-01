@@ -1,4 +1,4 @@
-package com.osaigbovo.journalapp.data.models;
+package com.osaigbovo.journalapp.models;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;

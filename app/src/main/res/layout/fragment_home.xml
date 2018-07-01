@@ -6,25 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <!--<include layout="@layout/item_journal_entry" />-->
-    <!--android:layoutAnimation="@anim/layout_animation_fall_down"-->
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="64dp"
+        android:layoutAnimation="@anim/layout_animation_from_right"
         android:scrollbars="vertical"
+        android:descendantFocusability="blocksDescendants"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@android:layout/simple_list_item_1" />
-
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="64dp"
+        android:elevation="4dp"
+        android:layout_marginBottom="70dp"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         app:fabSize="mini"
         app:srcCompat="@android:drawable/ic_dialog_email" />

@@ -5,25 +5,34 @@ import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.osaigbovo.journalapp.R;
+import com.osaigbovo.journalapp.models.Home;
 import com.osaigbovo.journalapp.utilities.GlideApp;
 
-public class HomeViewHolder extends RecyclerView.ViewHolder {
+public class HomeViewHolder extends RecyclerView.ViewHolder
+        implements View.OnClickListener, View.OnCreateContextMenuListener,
+        PopupMenu.OnMenuItemClickListener {
 
     private final ImageView mImageViewEmotion;
+    //private final ImageView mImageViewOverlay;
     private final TextView mTextViewDate;
     private final TextView mTextViewFeeling;
     private final TextView mTextViewEntry;
     private final TextView mTextViewTime;
-    private StringBuilder mStringBuilder;
+    private final TextView mTextViewOption;
+
+    private Home mHome;
 
     Context mContext;
+    private HomeAdapter.OnItemSelectedListener listener;
 
     public HomeViewHolder(View itemView) {
         super(itemView);
@@ -33,8 +42,14 @@ public class HomeViewHolder extends RecyclerView.ViewHolder {
         mTextViewFeeling = itemView.findViewById(R.id.text_feeling);
         mTextViewTime = itemView.findViewById(R.id.text_time);
         mTextViewEntry = itemView.findViewById(R.id.text_journal);
+        mTextViewOption = itemView.findViewById(R.id.textViewOptions);
 
-        Log.w("JJJJJJJJ", "ggggggggggggggggggg");
+        //mImageViewOverlay = itemView.findViewById(R.id.image_overlay);
+
+
+
+        /*mImageViewOverlay.setOnClickListener(this);
+        mImageViewOverlay.setOnCreateContextMenuListener(this);*/
     }
 
     public void bind(Home home) {
@@ -43,10 +58,12 @@ public class HomeViewHolder extends RecyclerView.ViewHolder {
         mTextViewEntry.setText(home.getEntry());
         mTextViewTime.setText(home.getTime());
 
-        Log.w("JJJJJJJJ", home.getDate() + home.getEntry());
-
         String mStringImage = home.getImage();
         getImage(mStringImage);
+        mHome = home;
+
+        mTextViewOption.setOnClickListener(this);
+        mTextViewOption.setOnCreateContextMenuListener(this);
     }
 
     private void getImage(String mStringImage) {
@@ -87,6 +104,32 @@ public class HomeViewHolder extends RecyclerView.ViewHolder {
                 .placeholder(cd)
                 .load(drawable)
                 .into(mImageViewEmotion);
+    }
+
+    @Override
+    public void onClick(View view) {
+        int position = getAdapterPosition();
+        if (listener != null) {
+            listener.onSelected(mHome);
+        }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu contextMenu, View view,
+                                    ContextMenu.ContextMenuInfo contextMenuInfo) {
+        PopupMenu popup = new PopupMenu(view.getContext(), view);
+        popup.getMenuInflater().inflate(R.menu.menu_popup, popup.getMenu());
+        popup.setOnMenuItemClickListener(this);
+        popup.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if (listener != null) {
+            //Home home = objects.get(getAdapterPosition());
+            listener.onMenuAction(mHome, item);
+        }
+        return false;
     }
 
 }

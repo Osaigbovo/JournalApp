@@ -15,27 +15,32 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.osaigbovo.journalapp.R;
+import com.osaigbovo.journalapp.models.Home;
 import com.osaigbovo.journalapp.ui.journal.JournalActivity;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements HomeAdapter.OnItemSelectedListener {
 
     private static final String TAG = HomeFragment.class.getSimpleName();
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
-    private HomeAdapter mHomeAdapter = new HomeAdapter();
+    private HomeAdapter mHomeAdapter = new HomeAdapter(this);
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private HomeListViewModel homeListViewModel;
+
+    @Inject
+    Context context;
 
     private OnFragmentInteractionListener mListener;
 
@@ -62,7 +67,7 @@ public class HomeFragment extends Fragment {
         mRecyclerView = rootView.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        mLinearLayoutManager.setReverseLayout(true);
+        mLinearLayoutManager.setReverseLayout(false);
         //mLinearLayoutManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
@@ -90,6 +95,27 @@ public class HomeFragment extends Fragment {
             liveData.observe(getActivity(), (List<Home> mHome) -> {
                 mHomeAdapter.setHomeList(mHome);
             });
+        }
+
+        //DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), VERTICAL);
+        //mRecyclerView.addItemDecoration(decoration);
+    }
+
+    @Override
+    public void onSelected(Home home) {
+        // Do something on select
+    }
+
+    @Override
+    public void onMenuAction(Home home, MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_edit:
+                // Add edit screen
+                break;
+            case R.id.menu_delete:
+                //objects.remove(object);
+                //setupObjectList();
+                break;
         }
     }
 
