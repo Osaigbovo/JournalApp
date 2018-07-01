@@ -1,37 +1,30 @@
 # JournalApp
 
-Popular Movies
-Here is a fully functional and colorful android app which I made from scratch for Android Developer Nanodegree program. 
-This app reveals the power of adaptive UI both for phone and tablet devices.
-
-Popular Movies was highly evaluated by certified Udacity code reviewer and was graded as "Exceeds Specifications".
+Here is a fully functional and colorful android app which I made from scratch for Andela-Google-Udacity Android Developer Scholarship. 
+This app reveals the power of Firebase, Dagger, and adaptive UI both for phone and tablet devices.
 
 # Features
 With the app, you can:
 
-Discover the most popular, the most rated or the highest rated movies
-Save favorite movies locally to view them even when offline
-Watch trailers
-Read reviews
-How to Work with the Source
-This app uses The Movie Database API to retrieve movies. You must provide your own API key in order to build the app. When you get it, just paste it to: app/build.gradle
+Write down how you day went, putting donw precious thought to a secure archive.
+Modify and delete your journal entries.
+See the date you filled in an entry.
+This app requires a Gmail account for login.
 
 # Screens
+![picture alt](https://github.com/Osaigbovo/JournalApp/blob/master/art/SignInScreen.jpg "Signin Screen")
+ ![picture alt](https://github.com/Osaigbovo/JournalApp/blob/master/art/HomeScreen.jpg "Home Screenl")
+![picture alt](https://github.com/Osaigbovo/JournalApp/blob/master/art/HomeEditScreen.jpg "Modify PopUp")
+![picture alt](https://github.com/Osaigbovo/JournalApp/blob/master/art/CalenderScreen.jpg "Calender Screen")
+![picture alt](https://github.com/Osaigbovo/JournalApp/blob/master/art/UserScreen.jpg "User Info Screenl")
 
-
-
-Libraries
-ButterKnife
-Dagger
-Retrofit
-SQLBrite
-RxJava
-RxAndroid
-Glide
-GlidePalette
-Android-ObservableScrollView
-Gradle Retrolambda Plugin
-
+# Libraries
+* Dagger
+* Firebase
+* Glide
+* ViewModel, LiveData and Lifecycle
+* MCalenderView
+* Espresso & AndroidJUnitRunner
 
 
 # License
