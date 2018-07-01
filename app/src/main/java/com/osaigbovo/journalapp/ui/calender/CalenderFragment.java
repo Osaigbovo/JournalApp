@@ -1,27 +1,43 @@
 package com.osaigbovo.journalapp.ui.calender;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
 import com.osaigbovo.journalapp.R;
+import com.osaigbovo.journalapp.data.models.CalenderDates;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import sun.bob.mcalendarview.MCalendarView;
+import sun.bob.mcalendarview.MarkStyle;
 import sun.bob.mcalendarview.listeners.OnDateClickListener;
 import sun.bob.mcalendarview.vo.DateData;
 
 public class CalenderFragment extends Fragment {
 
     private MCalendarView calendarView;
+    private CalenderDates calenderDates;
+    private ArrayList<CalenderDates> dates = new ArrayList<>();
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+    private CalenderViewModel calenderViewModel;
 
     private OnFragmentInteractionListener mListener;
 
@@ -39,6 +55,7 @@ public class CalenderFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        calenderViewModel = ViewModelProviders.of(this, viewModelFactory).get(CalenderViewModel.class);
     }
 
     @Override
@@ -48,21 +65,21 @@ public class CalenderFragment extends Fragment {
 
         calendarView = rootView.findViewById(R.id.calendarView);
 
-        ArrayList<DateData> dates = new ArrayList<>();
-        dates.add(new DateData(2018, 04, 26));
-        dates.add(new DateData(2018, 04, 27));
-
-        // Mark multiple dates with this code.
-        for (int i = 0; i < dates.size(); i++) {
-            calendarView
-                    .markDate(dates.get(i).getYear(), dates.get(i).getMonth(), dates.get(i).getDay());
-
-            /*mCalendarView
-                    .markDate(new DateData(2016, 3, 1)
-                            .setMarkStyle(new MarkStyle(MarkStyle.BACKGROUND, Color.GREEN)));*/
-        }
-        // Get all marked dates.
-        Log.d("marked dates:-", "" + calendarView.getMarkedDates());
+        LiveData<DataSnapshot> liveData = calenderViewModel.getDataSnapshotLiveData();
+        liveData.observe(this, new Observer<DataSnapshot>() {
+            @Override
+            public void onChanged(@Nullable DataSnapshot dataSnapshot) {
+                calendarView.setMarkedStyle(MarkStyle.BACKGROUND, Color.RED);
+                if (dataSnapshot != null) {
+                    calenderDates = dataSnapshot.getValue(CalenderDates.class);
+                    dates.add(calenderDates);
+                    for (int i = 0; i < dates.size(); i++) {
+                        calendarView.markDate(dates.get(i).getYear(), dates.get(i).getMonth(), dates.get(i).getDay())
+                                .setMarkedStyle(MarkStyle.BACKGROUND, Color.RED);
+                    }
+                }
+            }
+        });
 
         calendarView.setOnDateClickListener(new OnDateClickListener() {
             @Override

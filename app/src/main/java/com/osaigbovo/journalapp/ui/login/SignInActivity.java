@@ -181,6 +181,7 @@ public class SignInActivity extends BaseActivity implements
 
             Intent homeActivityIntent = new Intent(SignInActivity.this, MainActivity.class);
             homeActivityIntent.putExtra("User", user);
+            finish();
             startActivity(homeActivityIntent);
         } else {
             mStatusTextView.setText(R.string.signed_out);

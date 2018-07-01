@@ -61,7 +61,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void displayInfo(FirebaseUser user) {
-        mUserText.setText(user.getDisplayName());
+        mUserText.setText(user.getDisplayName() + " " + user.getEmail());
 
         GlideApp
                 .with(this)

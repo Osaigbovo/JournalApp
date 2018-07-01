@@ -1,33 +1,69 @@
 package com.osaigbovo.journalapp.ui.journal;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.osaigbovo.journalapp.data.models.CalenderDates;
+import com.osaigbovo.journalapp.data.models.Journal;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.inject.Inject;
 
 public class JournalViewModel extends ViewModel {
 
-   /* private final LiveData<Resource<List<TopMoviesEntity>>> popularMovies;
-    private final LiveData<Resource<List<NowPlayingEntity>>> nowPlayingMovies;
+    public DatabaseReference JOURNAL_REF =
+            FirebaseDatabase.getInstance().getReference().child("journal");
+
+    private final JournalLiveData journalLiveData = new JournalLiveData(JOURNAL_REF);
+    private final MediatorLiveData<Journal> mJournalLiveData = new MediatorLiveData<>();
 
     @Inject
-    public JournalViewModel(TopMoviesRepository movieRepository, NowPlayingRepository nowPlayingRepository) {
-        popularMovies = movieRepository.loadTopMovies(API_KEY);
-        nowPlayingMovies = nowPlayingRepository.loadNowPlay(API_KEY);
+    public JournalViewModel() {
+        mJournalLiveData.addSource(journalLiveData, new Observer<DataSnapshot>() {
+            @Override
+            public void onChanged(@Nullable final DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mJournalLiveData.postValue(dataSnapshot.getValue(Journal.class));
+                        }
+                    }).start();
+                } else {
+                    mJournalLiveData.setValue(null);
+                }
+            }
+        });
     }
 
-    public LiveData<Resource<List<NowPlayingEntity>>> getNowPlayMovies() {
-        return nowPlayingMovies;
+    @NonNull
+    public LiveData<DataSnapshot> getDataSnapshotLiveData() {
+        return journalLiveData;
     }
 
-    public LiveData<Resource<List<TopMoviesEntity>>> getPopularMovies() {
-        return popularMovies;
-    }*/
+    public void writeNewJournal(CalenderDates mCalenderDates, String stringDate, String stringTime,
+                                String stringEntry, String stringImage, String stringEmotion) {
 
-    /**
-     * This method will be called when this ViewModel is no longer used and will be destroyed.
-     * It is useful when ViewModel observes some data and you need to clear this subscription to
-     * prevent a leak of this ViewModel.
-     */
-    @Override
-    protected void onCleared() {
-        super.onCleared();
+        String key = JOURNAL_REF.push().getKey();
+        Journal mJournal = new Journal(stringDate, stringTime, stringEntry, stringImage, stringEmotion);
+
+        Map<String, Object> postValues = mJournal.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/journals/" + key, postValues);
+        Map<String, Object> postDateValues = mCalenderDates.toMap();
+        Map<String, Object> childDateUpdates = new HashMap<>();
+        childDateUpdates.put("/dates/" + key, postDateValues);
+
+        JOURNAL_REF.updateChildren(childUpdates);
+        JOURNAL_REF.updateChildren(childDateUpdates);
     }
 }

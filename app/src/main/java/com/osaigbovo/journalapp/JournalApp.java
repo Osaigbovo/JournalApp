@@ -6,6 +6,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.FirebaseDatabase;
 import com.osaigbovo.journalapp.di.AppInjector;
 
 import javax.inject.Inject;
@@ -33,6 +35,10 @@ public class JournalApp extends Application implements HasActivityInjector {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        if (!FirebaseApp.getApps(this).isEmpty()) {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        }
 
         AppInjector.init(this);
     }

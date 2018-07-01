@@ -26,12 +26,21 @@ import com.osaigbovo.journalapp.ui.home.HomeFragment;
 import com.osaigbovo.journalapp.ui.userinfo.MenuActivity;
 import com.osaigbovo.journalapp.utilities.GlideApp;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
+
 public class MainActivity extends AppCompatActivity implements
-        HomeFragment.OnFragmentInteractionListener, CalenderFragment.OnFragmentInteractionListener {
+        HomeFragment.OnFragmentInteractionListener, CalenderFragment.OnFragmentInteractionListener, HasSupportFragmentInjector {
 
     private FirebaseUser user;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
     private BottomNavigationView mBottomNavigationView;
 
@@ -52,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -77,6 +87,11 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         user = mAuth.getCurrentUser();
+    }
+
+    @Override
+    public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
+        return dispatchingAndroidInjector;
     }
 
     @Override

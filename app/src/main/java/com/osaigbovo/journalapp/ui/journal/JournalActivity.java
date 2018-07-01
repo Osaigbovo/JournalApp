@@ -2,8 +2,13 @@ package com.osaigbovo.journalapp.ui.journal;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,21 +22,21 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.osaigbovo.journalapp.MainActivity;
 import com.osaigbovo.journalapp.R;
-import com.osaigbovo.journalapp.data.models.Journal;
+import com.osaigbovo.journalapp.data.models.CalenderDates;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
+
+import javax.inject.Inject;
 
 public class JournalActivity extends AppCompatActivity implements View.OnClickListener {
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+    private JournalViewModel journalViewModel;
 
     private DatePickerDialog picker;
     private TextView mTextViewDate, mTextVIewTime, mTextViewEntry,
@@ -45,27 +50,19 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             = {R.id.image_laugh, R.id.image_happy, R.id.image_meh, R.id.image_sad, R.id.image_cry};
 
     private int mYear, mMonth, mDay, mHour, mMinute;
-
+    private int mYearB, mMonthB, mDayB;
     private String stringDate, stringTime, stringEntry, stringEmotion, stringImage;
-
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mCalenderDatabaseReference;
-    private ValueEventListener valueEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_journal);
+        journalViewModel = ViewModelProviders.of(this, viewModelFactory).get(JournalViewModel.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar_journal);
         setSupportActionBar(toolbar);
-
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mCalenderDatabaseReference = mFirebaseDatabase.getReference();
-
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
-
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
 
@@ -213,54 +210,31 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             Toast.makeText(JournalActivity.this, "How was your day?", Toast.LENGTH_LONG).show();
             return;
         }
+        mFab.setVisibility(View.INVISIBLE);
 
-        mCalenderDatabaseReference.child("journal").addListenerForSingleValueEvent(
-                valueEventListener = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // write new journal entry
-                        writeNewJournal(stringDate, stringTime, stringEntry, stringImage, stringEmotion);
+        LiveData<DataSnapshot> liveData = journalViewModel.getDataSnapshotLiveData();
+        liveData.observe(this, new Observer<DataSnapshot>() {
+            @Override
+            public void onChanged(@Nullable DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    // write new journal entry
+                    CalenderDates mCalenderDates = new CalenderDates(mYearB, mMonthB, mDayB);
 
-                        //Display a toast, and reset the fields.
-                        Toast.makeText(JournalActivity.this, "Journal...",
-                                Toast.LENGTH_SHORT).show();
-
-                        // successful entry - return to main activity
-                        Intent mainActivityIntent = new
-                                Intent(JournalActivity.this, MainActivity.class);
-                        startActivity(mainActivityIntent);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                        Toast.makeText(JournalActivity.this, "There was an error.",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    journalViewModel.writeNewJournal(mCalenderDates, stringDate, stringTime, stringEntry, stringImage, stringEmotion);
+                    //Display a toast, and reset the fields.
+                    Toast.makeText(JournalActivity.this, "Journal...",
+                            Toast.LENGTH_SHORT).show();
+                    Intent mainActivityIntent = new
+                            Intent(JournalActivity.this, MainActivity.class);
+                    startActivity(mainActivityIntent);
+                }
+            }
+        });
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
-        if (valueEventListener != null) {
-            mCalenderDatabaseReference.removeEventListener(valueEventListener);
-            valueEventListener = null;
-        }
-    }
-
-
-    private void writeNewJournal(String stringDate, String stringTime,
-                                 String stringEntry, String stringImage, String stringEmotion) {
-
-        String key = mCalenderDatabaseReference.child("journal").push().getKey();
-        Journal mJournal = new Journal(stringDate, stringTime, stringEntry, stringImage, stringEmotion);
-        Map<String, Object> postValues = mJournal.toMap();
-
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/journal/" + key, postValues);
-        mCalenderDatabaseReference.updateChildren(childUpdates);
     }
 
     private void getDate() {
@@ -281,13 +255,17 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
 
                         StringBuilder stringBuilder = new StringBuilder();
 
+                        mYearB = year;
+                        mMonthB = Integer.parseInt(String.valueOf(monthOfYear), 8) + 1;
+                        mDayB = dayOfMonth;
+
                         stringBuilder
-                                .append(cldr.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH))
-                                .append(",  ")
+                                .append(cldr.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH))
+                                .append(", ")
                                 .append(cldr.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH))
-                                .append(" ")
+                                .append("")
                                 .append(cldr.get(Calendar.DAY_OF_MONTH))
-                                .append("   ")
+                                .append(", ")
                                 .append(cldr.get(Calendar.YEAR));
 
                         String s = stringBuilder.toString();

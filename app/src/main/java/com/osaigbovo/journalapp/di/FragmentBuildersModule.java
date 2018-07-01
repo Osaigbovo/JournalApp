@@ -1,5 +1,8 @@
 package com.osaigbovo.journalapp.di;
 
+import com.osaigbovo.journalapp.ui.calender.CalenderFragment;
+import com.osaigbovo.journalapp.ui.home.HomeFragment;
+
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
@@ -7,16 +10,9 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class FragmentBuildersModule {
 
-    /*@ContributesAndroidInjector
-    abstract Theaters contributeTheaters();
+    @ContributesAndroidInjector
+    abstract CalenderFragment contributeCalenderFragment();
 
     @ContributesAndroidInjector
-    abstract MovieDetails contributeMovieDetails();
-
-    @ContributesAndroidInjector
-    abstract WatchList contributeWatchList();
-
-    @ContributesAndroidInjector
-    abstract Coming contributeComing();*/
-
+    abstract HomeFragment contributeHomeFragment();
 }
