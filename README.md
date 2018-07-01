@@ -12,10 +12,19 @@ See the date you filled in an entry.
 This app requires a Gmail account for login.
 
 # Screens
+*Signin Screen*
 ![picture alt](https://github.com/Osaigbovo/JournalApp/blob/master/art/SignInScreen.jpg "Signin Screen")
- ![picture alt](https://github.com/Osaigbovo/JournalApp/blob/master/art/HomeScreen.jpg "Home Screenl")
+
+*Home Screen*
+![picture alt](https://github.com/Osaigbovo/JournalApp/blob/master/art/HomeScreen.jpg "Home Screenl")
+
+*HomeEdit Screen*
 ![picture alt](https://github.com/Osaigbovo/JournalApp/blob/master/art/HomeEditScreen.jpg "Modify PopUp")
+
+*Calender Screen*
 ![picture alt](https://github.com/Osaigbovo/JournalApp/blob/master/art/CalenderScreen.jpg "Calender Screen")
+
+*User Screen*
 ![picture alt](https://github.com/Osaigbovo/JournalApp/blob/master/art/UserScreen.jpg "User Info Screenl")
 
 # Libraries
