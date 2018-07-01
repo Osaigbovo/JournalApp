@@ -15,7 +15,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,13 +26,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class HomeFragment extends Fragment implements HomeAdapter.OnItemSelectedListener {
+public class HomeFragment extends Fragment {
 
     private static final String TAG = HomeFragment.class.getSimpleName();
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
-    private HomeAdapter mHomeAdapter = new HomeAdapter(this);
+    private HomeAdapter mHomeAdapter = new HomeAdapter();
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -93,29 +92,8 @@ public class HomeFragment extends Fragment implements HomeAdapter.OnItemSelected
         if (homeListViewModel != null) {
             LiveData<List<Home>> liveData = homeListViewModel.getHomeListLiveData();
             liveData.observe(getActivity(), (List<Home> mHome) -> {
-                mHomeAdapter.setHomeList(mHome);
+                mHomeAdapter.setHomeList(homeListViewModel, mHome);
             });
-        }
-
-        //DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), VERTICAL);
-        //mRecyclerView.addItemDecoration(decoration);
-    }
-
-    @Override
-    public void onSelected(Home home) {
-        // Do something on select
-    }
-
-    @Override
-    public void onMenuAction(Home home, MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_edit:
-                // Add edit screen
-                break;
-            case R.id.menu_delete:
-                //objects.remove(object);
-                //setupObjectList();
-                break;
         }
     }
 
@@ -128,6 +106,7 @@ public class HomeFragment extends Fragment implements HomeAdapter.OnItemSelected
     @Override
     public void onStart() {
         super.onStart();
+        (getActivity()).setTitle("Home");
     }
 
     @Override

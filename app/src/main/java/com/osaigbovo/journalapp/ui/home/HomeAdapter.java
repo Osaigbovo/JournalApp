@@ -1,12 +1,17 @@
 package com.osaigbovo.journalapp.ui.home;
 
+import android.content.Intent;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.osaigbovo.journalapp.R;
 import com.osaigbovo.journalapp.models.Home;
+import com.osaigbovo.journalapp.ui.journal.JournalActivity;
 
 import java.util.List;
 
@@ -14,14 +19,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
     private final static String TAG = "Adapter";
     private List<Home> mhomeList;
-    private OnItemSelectedListener listener;
+    private HomeListViewModel homeListViewModel;
 
-    public HomeAdapter(OnItemSelectedListener listener) {
-        this.listener = listener;
-    }
-
-    void setHomeList(final List<Home> homeList) {
+    void setHomeList(HomeListViewModel homeListViewModel, final List<Home> homeList) {
         mhomeList = homeList;
+        this.homeListViewModel = homeListViewModel;
         notifyDataSetChanged();
     }
 
@@ -33,19 +35,41 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
     @Override
     public void onBindViewHolder(HomeViewHolder homeViewHolder, int position) {
-        Home home = mhomeList.get(position);
+        final Home home = mhomeList.get(position);
         homeViewHolder.bind(home);
+
+        homeViewHolder.mTextViewOption.setOnClickListener((View view) -> {
+            PopupMenu popup = new PopupMenu(view.getContext(), view);
+            popup.getMenuInflater().inflate(R.menu.menu_popup, popup.getMenu());
+            popup.setOnMenuItemClickListener((MenuItem item) -> {
+                switch (item.getItemId()) {
+                    case R.id.menu_edit:
+                        final Intent editIntent = new Intent(view.getContext(), JournalActivity.class);
+                        //String key = homeListViewModel.getKeyHome(home);
+
+                        editIntent.putExtra("EDIT", home);
+                        //editIntent.putExtra("KEY", key);
+                        view.getContext().startActivity(editIntent);
+
+                        break;
+                    case R.id.menu_delete:
+                        mhomeList.remove(home);
+                        homeListViewModel.deleteJournal(home);
+                        Toast.makeText(view.getContext(), "Journal for : " + home.getDate()
+                                + " has been deleted.", Toast.LENGTH_LONG).show();
+
+                        notifyItemRemoved(position);
+
+                        break;
+                }
+                return false;
+            });
+            popup.show();
+        });
     }
 
     @Override
     public int getItemCount() {
         return mhomeList == null ? 0 : mhomeList.size();
-    }
-
-    public interface OnItemSelectedListener {
-
-        void onSelected(Home home);
-
-        void onMenuAction(Home home, MenuItem item);
     }
 }

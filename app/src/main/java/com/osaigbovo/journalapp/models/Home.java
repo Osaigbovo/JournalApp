@@ -1,5 +1,8 @@
 package com.osaigbovo.journalapp.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -7,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @IgnoreExtraProperties
-public class Home {
+public class Home implements Parcelable {
 
     private String date;
     private String emoticon;
@@ -76,4 +79,37 @@ public class Home {
         result.put("time", time);
         return result;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeString(this.date);
+        parcel.writeString(this.emoticon);
+        parcel.writeString(this.entry);
+        parcel.writeString(this.image);
+        parcel.writeString(this.time);
+    }
+
+    protected Home(Parcel in) {
+        this.date = in.readString();
+        this.emoticon = in.readString();
+        this.entry = in.readString();
+        this.image = in.readString();
+        this.time = in.readString();
+    }
+
+    public static final Creator<Home> CREATOR = new Creator<Home>() {
+        public Home createFromParcel(Parcel source) {
+            return new Home(source);
+        }
+
+        public Home[] newArray(int size) {
+            return new Home[size];
+        }
+    };
+
 }

@@ -7,8 +7,10 @@ import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.osaigbovo.journalapp.models.Home;
 
 import java.util.ArrayList;
@@ -24,6 +26,8 @@ public class HomeListViewModel extends ViewModel {
 
     HomeQueryLiveData mLiveData = new HomeQueryLiveData(dataRef);
     LiveData<List<Home>> mHomeLiveData;
+    String clubkey;
+    String key;
 
     private List<Home> mList = new ArrayList<>();
 
@@ -48,6 +52,44 @@ public class HomeListViewModel extends ViewModel {
             return mList;
         }
     }
+
+    public void deleteJournal(Home home) {
+        dataRef.orderByChild("entry")
+                .equalTo(home.getEntry())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                            clubkey = childSnapshot.getKey();
+                            dataRef.child(clubkey).removeValue();
+                            dataRef.getParent().child("dates").child(clubkey).removeValue();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+   /* public String getKeyHome(Home home) {
+
+        dataRef.orderByChild("entry")
+                .equalTo(home.getEntry())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                            key = childSnapshot.getKey();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+        return key;
+    }*/
+
 }
-
-

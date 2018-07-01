@@ -47,7 +47,7 @@ public class CalenderLiveData extends LiveData<DataSnapshot> {
 
         @Override
         public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+            setValue(dataSnapshot);
         }
 
         @Override

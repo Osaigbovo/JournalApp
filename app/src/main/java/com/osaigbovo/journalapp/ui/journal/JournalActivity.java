@@ -25,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.osaigbovo.journalapp.MainActivity;
 import com.osaigbovo.journalapp.R;
 import com.osaigbovo.journalapp.models.CalenderDates;
+import com.osaigbovo.journalapp.models.Home;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -53,6 +54,8 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
     private int mYearB, mMonthB, mDayB;
     private String stringDate, stringTime, stringEntry, stringEmotion, stringImage;
 
+    Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +80,18 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
 
         mImageButtonDate = findViewById(R.id.imagebutton_date);
         mImageButtonTime = findViewById(R.id.imagebutton_time);
+
+        intent = getIntent();
+        if (intent.hasExtra("Edit")) {
+            setTitle("Edit Journal");
+
+            Home h = intent.getParcelableExtra("Edit");
+
+            mTextViewDate.setText(h.getDate());
+            mTextVIewTime.setText(h.getTime());
+            mTextViewEntry.setText(h.getEntry());
+        }
+
         mFab = findViewById(R.id.fab_journal);
 
         mImageButtonDate.setOnClickListener(new View.OnClickListener() {
@@ -210,7 +225,7 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             Toast.makeText(JournalActivity.this, "How was your day?", Toast.LENGTH_LONG).show();
             return;
         }
-        mFab.setVisibility(View.GONE);
+
         LiveData<DataSnapshot> liveData = journalViewModel.getDataSnapshotLiveData();
         liveData.observe(this, new Observer<DataSnapshot>() {
             @Override
@@ -229,6 +244,23 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (intent.hasExtra("Edit")) {
+            setTitle("Edit Journal");
+
+            Home h = intent.getParcelableExtra("Edit");
+
+            mTextViewDate.setText(h.getDate());
+            mTextVIewTime.setText(h.getTime());
+            mTextViewEntry.setText(h.getEntry());
+        }
+
+        setTitle("Add Title");
     }
 
     @Override
