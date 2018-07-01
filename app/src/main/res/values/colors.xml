@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-
+    <color name="colorPrimary">#ac3939</color>
+    <color name="colorPrimaryDark">#602020</color>
+    <color name="colorAccent">#44a9f1</color>
 
     <color name="grey_100">#f5f5f5</color>
     <color name="grey_300">#e0e0e0</color>
     <color name="grey_500">#9E9E9E</color>
 
-    <color name="one">#6a0883</color>
-    <color name="two">#d381e9</color>
-
-
-    <color name="color_text">#6a0883</color>
+    <color name="color_text">#35021c</color>
 
 
     <color name="light_status_bar_against_toolbar">#ffe8eaea</color>

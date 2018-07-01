@@ -61,7 +61,7 @@
             android:fontFamily="sans-serif"
             android:textAlignment="center"
             android:textAllCaps="true"
-            android:textColor="@android:color/holo_orange_dark"
+            android:textColor="@color/color_text"
             android:textSize="24sp"
             android:textStyle="bold"
             android:typeface="normal"
