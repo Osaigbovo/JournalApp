@@ -275,7 +275,7 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             mTextViewEntry.setText(h.getEntry());
         }
 
-        setTitle("Add Title");
+        setTitle("Add Journal");
     }
 
     @Override

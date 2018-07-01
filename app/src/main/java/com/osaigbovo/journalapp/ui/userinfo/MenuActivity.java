@@ -89,4 +89,10 @@ public class MenuActivity extends AppCompatActivity {
                 .load(user.getPhotoUrl())
                 .into(mUserImage);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setTitle("User");
+    }
 }
