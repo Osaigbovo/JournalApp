@@ -26,6 +26,10 @@
 
     </style>
 
+    <style name="ToolbarTheme">
+        <item name="android:textColorPrimary">@color/grey_100</item>
+    </style>
+
     <style name="AppThemes" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>

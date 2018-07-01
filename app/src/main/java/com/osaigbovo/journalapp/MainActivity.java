@@ -82,10 +82,6 @@ public class MainActivity extends AppCompatActivity implements
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setLogo(getDrawable(R.drawable.ic_home_black_24dp));
-
-        // TODO New > Image Asset > Action Bar and Tab Icons
-        //getSupportActionBar().setIcon(getDrawable(R.drawable.ic_menu_camera));
         mBottomNavigationView = findViewById(R.id.navigation);
         mBottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
