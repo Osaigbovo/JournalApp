@@ -33,7 +33,6 @@ import android.view.MenuItem;
 
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.osaigbovo.journalapp.ui.calender.CalenderFragment;
@@ -54,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
     private FirebaseUser user;
     private FirebaseAuth mAuth;
-    private GoogleSignInClient mGoogleSignInClient;
     private BottomNavigationView mBottomNavigationView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -141,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    // TODO Add Comments
     private void launchFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
