@@ -28,10 +28,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,7 +39,6 @@ import com.osaigbovo.journalapp.R;
 import com.osaigbovo.journalapp.models.CalenderDates;
 import com.osaigbovo.journalapp.models.Home;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -52,6 +49,8 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private JournalViewModel journalViewModel;
+
+    private final Calendar calendar = Calendar.getInstance();
 
     private DatePickerDialog picker;
     private TextView mTextViewDate, mTextVIewTime, mTextViewEntry,
@@ -268,60 +267,40 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void getDate() {
-        final Calendar cldr = Calendar.getInstance();
-        mDay = cldr.get(Calendar.DAY_OF_MONTH);
-        mMonth = cldr.get(Calendar.MONTH);
-        mYear = cldr.get(Calendar.YEAR);
+        mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        mMonth = calendar.get(Calendar.MONTH);
+        mYear = calendar.get(Calendar.YEAR);
         // date picker dialog
-        picker = new DatePickerDialog(JournalActivity.this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        picker = new DatePickerDialog(JournalActivity.this, (view, year, monthOfYear, dayOfMonth) -> {
+            calendar.set(year, monthOfYear, dayOfMonth);
+            //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
 
-                        cldr.set(year, monthOfYear, dayOfMonth);
+            StringBuilder stringBuilder = new StringBuilder();
+            mYearB = year;
+            mMonthB = Integer.parseInt(String.valueOf(monthOfYear), 8) + 1;
+            mDayB = dayOfMonth;
+            stringBuilder
+                    .append(calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH))
+                    .append(", ")
+                    .append(calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH))
+                    .append("")
+                    .append(calendar.get(Calendar.DAY_OF_MONTH))
+                    .append(", ")
+                    .append(calendar.get(Calendar.YEAR));
 
-                        SimpleDateFormat simpleDateFormat
-                                = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
-
-                        StringBuilder stringBuilder = new StringBuilder();
-
-                        mYearB = year;
-                        mMonthB = Integer.parseInt(String.valueOf(monthOfYear), 8) + 1;
-                        mDayB = dayOfMonth;
-
-                        stringBuilder
-                                .append(cldr.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH))
-                                .append(", ")
-                                .append(cldr.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH))
-                                .append("")
-                                .append(cldr.get(Calendar.DAY_OF_MONTH))
-                                .append(", ")
-                                .append(cldr.get(Calendar.YEAR));
-
-                        String s = stringBuilder.toString();
-
-                        mTextViewDate.setText(s);
-                    }
-
-                }, mYear, mMonth, mDay);
+            mTextViewDate.setText(stringBuilder.toString());
+        }, mYear, mMonth, mDay);
         picker.show();
     }
 
     private void getTime() {
         // Get Current Time
-        final Calendar c = Calendar.getInstance();
-        mHour = c.get(Calendar.HOUR_OF_DAY);
-        mMinute = c.get(Calendar.MINUTE);
+        mHour = calendar.get(Calendar.HOUR_OF_DAY);
+        mMinute = calendar.get(Calendar.MINUTE);
 
         // Launch Time Picker Dialog
         TimePickerDialog timePickerDialog = new TimePickerDialog(JournalActivity.this,
-                new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay,
-                                          int minute) {
-                        mTextVIewTime.setText(hourOfDay + ":" + minute);
-                    }
-                }, mHour, mMinute, false);
+                (view, hourOfDay, minute) -> mTextVIewTime.setText(hourOfDay + ":" + minute), mHour, mMinute, false);
         timePickerDialog.show();
     }
 
