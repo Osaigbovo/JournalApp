@@ -39,7 +39,7 @@ import javax.inject.Inject;
 public class JournalViewModel extends ViewModel {
 
     public DatabaseReference JOURNAL_REF =
-            FirebaseDatabase.getInstance().getReference().child("journal");
+            FirebaseDatabase.getInstance().getReference().child("users");
 
     private final JournalLiveData journalLiveData = new JournalLiveData(JOURNAL_REF);
     private final MediatorLiveData<Journal> mJournalLiveData = new MediatorLiveData<>();
@@ -75,10 +75,11 @@ public class JournalViewModel extends ViewModel {
         return search;
     }
 
-    public void writeNewJournal(CalenderDates mCalenderDates, String stringDate, String stringTime,
-                                String stringEntry, String stringImage, String stringEmotion) {
+    public void writeNewJournal(CalenderDates mCalenderDates, String userId, String stringDate,
+                                String stringTime, String stringEntry, String stringImage,
+                                String stringEmotion) {
 
-        String key = JOURNAL_REF.push().getKey();
+        String key = JOURNAL_REF.child(userId).push().getKey();
         Journal mJournal = new Journal(stringDate, stringTime, stringEntry, stringImage, stringEmotion);
 
         Map<String, Object> postValues = mJournal.toMap();

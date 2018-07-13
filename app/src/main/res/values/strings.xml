@@ -7,6 +7,11 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in_">Sign In</string>
+    <string name="hint_password">password</string>
+    <string name="hint_email">email</string>
+
 
     <!-- Login -->
     <string name="label_sign_in">My Journal</string>

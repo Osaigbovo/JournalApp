@@ -18,12 +18,10 @@ package com.osaigbovo.journalapp.ui.journal;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +34,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.osaigbovo.journalapp.MainActivity;
 import com.osaigbovo.journalapp.R;
@@ -68,6 +67,7 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
     private int mYear, mMonth, mDay, mHour, mMinute;
     private int mYearB, mMonthB, mDayB;
     private String stringDate, stringTime, stringEntry, stringEmotion, stringImage;
+    private static final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     Intent intent;
 
@@ -75,14 +75,38 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_journal);
-        journalViewModel = ViewModelProviders.of(this, viewModelFactory).get(JournalViewModel.class);
+        journalViewModel
+                = ViewModelProviders.of(this, viewModelFactory).get(JournalViewModel.class);
 
+        initView();
+
+        intent = getIntent();
+        if (intent.hasExtra("Edit")) {
+            setTitle("Edit Journal");
+
+            Home h = intent.getParcelableExtra("Edit");
+            mTextViewDate.setText(h.getDate());
+            mTextVIewTime.setText(h.getTime());
+            mTextViewEntry.setText(h.getEntry());
+        }
+
+        mImageButtonDate.setOnClickListener((View v) -> getDate());
+        mImageButtonTime.setOnClickListener((View v) -> getTime());
+        mFab.setOnClickListener((View v) -> getJournal());
+
+        for (int i = 0; i < btn.length; i++) {
+            btn[i] = findViewById(btn_id[i]);
+            btn[i].setOnClickListener(this);
+        }
+        btn_unfocus = btn[0];
+    }
+
+    private void initView() {
         Toolbar toolbar = findViewById(R.id.toolbar_journal);
         setSupportActionBar(toolbar);
-        // Get a support ActionBar corresponding to this toolbar
-        ActionBar ab = getSupportActionBar();
-        // Enable the Up button
-        ab.setDisplayHomeAsUpEnabled(true);
+
+        ActionBar ab = getSupportActionBar(); // Get a support ActionBar corresponding to this toolbar
+        ab.setDisplayHomeAsUpEnabled(true); // Enable the Up button
 
         mTextViewDate = findViewById(R.id.text_journal_date);
         mTextVIewTime = findViewById(R.id.text_journal_time);
@@ -92,49 +116,9 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
         mTextViewMeh = findViewById(R.id.text_meh);
         mTextViewSad = findViewById(R.id.text_sad);
         mTextViewCry = findViewById(R.id.text_cry);
-
         mImageButtonDate = findViewById(R.id.imagebutton_date);
         mImageButtonTime = findViewById(R.id.imagebutton_time);
-
-        intent = getIntent();
-        if (intent.hasExtra("Edit")) {
-            setTitle("Edit Journal");
-
-            Home h = intent.getParcelableExtra("Edit");
-
-            mTextViewDate.setText(h.getDate());
-            mTextVIewTime.setText(h.getTime());
-            mTextViewEntry.setText(h.getEntry());
-        }
-
         mFab = findViewById(R.id.fab_journal);
-
-        mImageButtonDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getDate();
-            }
-        });
-
-        mImageButtonTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getTime();
-            }
-        });
-
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getJournal();
-            }
-        });
-
-        for (int i = 0; i < btn.length; i++) {
-            btn[i] = findViewById(btn_id[i]);
-            btn[i].setOnClickListener(this);
-        }
-        btn_unfocus = btn[0];
     }
 
     @Override
@@ -225,6 +209,7 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
         stringEntry = mTextViewEntry.getText().toString();
 
         if (TextUtils.isEmpty(stringDate)) {
+            mTextViewDate.setError("Select a date!");
             Toast.makeText(JournalActivity.this, "Select a date!", Toast.LENGTH_LONG).show();
             return;
         }
@@ -242,21 +227,20 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         LiveData<DataSnapshot> liveData = journalViewModel.getDataSnapshotLiveData();
-        liveData.observe(this, new Observer<DataSnapshot>() {
-            @Override
-            public void onChanged(@Nullable DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    // write new journal entry
-                    CalenderDates mCalenderDates = new CalenderDates(mYearB, mMonthB, mDayB);
 
-                    journalViewModel.writeNewJournal(mCalenderDates, stringDate, stringTime, stringEntry, stringImage, stringEmotion);
-                    //Display a toast, and reset the fields.
-                    Toast.makeText(JournalActivity.this, "Journal...",
-                            Toast.LENGTH_SHORT).show();
-                    Intent mainActivityIntent = new
-                            Intent(JournalActivity.this, MainActivity.class);
-                    startActivity(mainActivityIntent);
-                }
+        liveData.observe(this, (DataSnapshot dataSnapshot) -> {
+            if (dataSnapshot != null) {
+                // write new journal entry
+                CalenderDates mCalenderDates = new CalenderDates(mYearB, mMonthB, mDayB);
+                journalViewModel.writeNewJournal(mCalenderDates, userId, stringDate, stringTime,
+                        stringEntry, stringImage, stringEmotion);
+                //Successful, back to main screen.
+                Toast.makeText(JournalActivity.this, "Journal...",
+                        Toast.LENGTH_SHORT).show();
+                Intent mainActivityIntent = new
+                        Intent(JournalActivity.this, MainActivity.class);
+                startActivity(mainActivityIntent);
+                finish();
             }
         });
     }

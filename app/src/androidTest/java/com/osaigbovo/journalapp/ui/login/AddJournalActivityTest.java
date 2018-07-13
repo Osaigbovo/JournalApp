@@ -37,7 +37,7 @@ import static org.hamcrest.Matchers.is;
 public class AddJournalActivityTest {
 
     @Rule
-    public ActivityTestRule<SignInActivity> mActivityTestRule = new ActivityTestRule<>(SignInActivity.class);
+    public ActivityTestRule<GoogleSignInActivity> mActivityTestRule = new ActivityTestRule<>(GoogleSignInActivity.class);
 
     @Test
     public void addJournalActivityTest() {

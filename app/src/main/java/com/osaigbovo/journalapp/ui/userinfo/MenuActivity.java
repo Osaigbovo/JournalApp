@@ -29,7 +29,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.osaigbovo.journalapp.R;
-import com.osaigbovo.journalapp.ui.login.SignInActivity;
+import com.osaigbovo.journalapp.ui.login.GoogleSignInActivity;
 import com.osaigbovo.journalapp.utilities.GlideApp;
 
 public class MenuActivity extends AppCompatActivity {
@@ -71,8 +71,9 @@ public class MenuActivity extends AppCompatActivity {
                 mAuth.signOut();
 
                 Intent signInIntent
-                        = new Intent(MenuActivity.this, SignInActivity.class);
+                        = new Intent(MenuActivity.this, GoogleSignInActivity.class);
                 startActivity(signInIntent);
+                finish();
             }
         });
     }
