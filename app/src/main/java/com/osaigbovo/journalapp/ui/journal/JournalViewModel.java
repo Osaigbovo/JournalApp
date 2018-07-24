@@ -22,13 +22,11 @@ import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.osaigbovo.journalapp.models.CalenderDates;
-import com.osaigbovo.journalapp.models.Home;
 import com.osaigbovo.journalapp.models.Journal;
 
 import java.util.HashMap;
@@ -38,8 +36,9 @@ import javax.inject.Inject;
 
 public class JournalViewModel extends ViewModel {
 
-    public DatabaseReference JOURNAL_REF =
-            FirebaseDatabase.getInstance().getReference().child("users");
+    private String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private DatabaseReference JOURNAL_REF
+            = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
     private final JournalLiveData journalLiveData = new JournalLiveData(JOURNAL_REF);
     private final MediatorLiveData<Journal> mJournalLiveData = new MediatorLiveData<>();
@@ -48,6 +47,7 @@ public class JournalViewModel extends ViewModel {
 
     @Inject
     public JournalViewModel() {
+
         mJournalLiveData.addSource(journalLiveData, new Observer<DataSnapshot>() {
             @Override
             public void onChanged(@Nullable final DataSnapshot dataSnapshot) {
@@ -75,17 +75,15 @@ public class JournalViewModel extends ViewModel {
         return search;
     }
 
-    public void writeNewJournal(CalenderDates mCalenderDates, String userId, String stringDate,
-                                String stringTime, String stringEntry, String stringImage,
-                                String stringEmotion) {
+    public void writeNewJournal(CalenderDates calenderDates, Journal journal) {
 
-        String key = JOURNAL_REF.child(userId).push().getKey();
-        Journal mJournal = new Journal(stringDate, stringTime, stringEntry, stringImage, stringEmotion);
+        String key = JOURNAL_REF.push().getKey();
 
-        Map<String, Object> postValues = mJournal.toMap();
+        Map<String, Object> postValues = journal.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/journals/" + key, postValues);
-        Map<String, Object> postDateValues = mCalenderDates.toMap();
+
+        Map<String, Object> postDateValues = calenderDates.toMap();
         Map<String, Object> childDateUpdates = new HashMap<>();
         childDateUpdates.put("/dates/" + key, postDateValues);
 
@@ -93,24 +91,4 @@ public class JournalViewModel extends ViewModel {
         JOURNAL_REF.updateChildren(childDateUpdates);
     }
 
-    public void getJournal(Home home) {
-        JOURNAL_REF.orderByChild("entry")
-                .equalTo(home.getEntry())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                            String clubkey = childSnapshot.getKey();
-
-                            Home h = dataSnapshot.child(clubkey).getValue(Home.class);
-                            /*dataRef.getParent().child("dates").child(clubkey).removeValue();*/
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-    }
 }

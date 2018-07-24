@@ -86,14 +86,8 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
         FloatingActionButton fab = rootView.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Create new Journal entry.
-                Intent intent = new Intent(getContext(), JournalActivity.class);
-                startActivity(intent);
-            }
-        });
+        fab.setOnClickListener((View view) -> startActivity(new Intent(getContext(), JournalActivity.class)));
+
         return rootView;
     }
 

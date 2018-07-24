@@ -17,10 +17,13 @@ package com.osaigbovo.journalapp.ui.home;
 
 import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,19 +39,45 @@ import javax.inject.Inject;
 public class HomeListViewModel extends ViewModel {
     private static String TAG = "HomeListViewModel";
 
-    private static final DatabaseReference dataRef =
-            FirebaseDatabase.getInstance().getReference().child("journal").child("journals");
+    private String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private DatabaseReference dataRef =
+            FirebaseDatabase.getInstance().getReference()
+                    .child("users").child(userId).child("journals");
 
     HomeQueryLiveData mLiveData = new HomeQueryLiveData(dataRef.orderByChild("dates"));
     LiveData<List<Home>> mHomeLiveData;
-    String clubkey;
-    String key;
+    private String clubkey;
+    private String journalKeys;
 
     private List<Home> mList = new ArrayList<>();
+
+    private MutableLiveData<String> editLiveData = new MutableLiveData<>();
+    private LiveData<String> resultKey;
+    private MutableLiveData<String> jo = new MutableLiveData<>();
 
     @Inject
     public HomeListViewModel() {
         mHomeLiveData = Transformations.map(mLiveData, new Deserializer());
+
+        /*resultKey = Transformations.switchMap(editLiveData, home -> {
+            dataRef.orderByChild("entry")
+                    .equalTo(home)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                String journalKey = childSnapshot.getKey();
+                                journalKeys = journalKey;
+                                jo.setValue(journalKey);
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
+            return jo;
+        });*/
+
     }
 
     @NonNull
@@ -66,6 +95,35 @@ public class HomeListViewModel extends ViewModel {
             }
             return mList;
         }
+    }
+
+    public LiveData<String> getResults() {
+        return resultKey;
+    }
+
+    public void setHome(Home home) {
+        this.editLiveData.setValue(home.getEntry());
+    }
+
+    public String getJournal(Home home) {
+        dataRef.orderByChild("entry")
+                .equalTo(home.getEntry())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                            String journalKey = childSnapshot.getKey();
+                            journalKeys = journalKey;
+                            Log.e(TAG, journalKeys);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+        return journalKeys;
     }
 
     public void deleteJournal(Home home) {
@@ -87,4 +145,5 @@ public class HomeListViewModel extends ViewModel {
                     }
                 });
     }
+
 }

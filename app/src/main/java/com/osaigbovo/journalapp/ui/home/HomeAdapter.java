@@ -32,9 +32,10 @@ import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
-    private final static String TAG = "Adapter";
+    private final static String TAG = "HomeAdapter";
     private List<Home> mhomeList;
     private HomeListViewModel homeListViewModel;
+    private String journalKey;
 
     void setHomeList(HomeListViewModel homeListViewModel, final List<Home> homeList) {
         mhomeList = homeList;
@@ -60,10 +61,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
                 switch (item.getItemId()) {
                     case R.id.menu_edit:
                         final Intent editIntent = new Intent(view.getContext(), JournalActivity.class);
-                        //String key = homeListViewModel.getKeyHome(home);
 
-                        editIntent.putExtra("EDIT", home);
-                        //editIntent.putExtra("KEY", key);
+                        journalKey = homeListViewModel.getJournal(home);
+                        //Log.e(TAG, journalKey.toString());
+
+                        /*// TODO 2 - What am I do?
+                        homeListViewModel.setHome(home);
+                        LiveData<String> keyLiveData = homeListViewModel.getResults();
+                        keyLiveData.observe(, s -> {
+                            editIntent.putExtra(JournalActivity.EXTRA_JOURNAL_KEY, s);
+                        });*/
+
+                        editIntent.putExtra(JournalActivity.EXTRA_JOURNAL_KEY, journalKey);
                         view.getContext().startActivity(editIntent);
 
                         break;

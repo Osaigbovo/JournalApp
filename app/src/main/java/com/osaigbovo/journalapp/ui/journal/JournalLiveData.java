@@ -17,6 +17,7 @@ package com.osaigbovo.journalapp.ui.journal;
 
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -57,7 +58,7 @@ public class JournalLiveData extends LiveData<DataSnapshot> {
 
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            Log.e(LOG_TAG, "Cannot listen to query " + query, databaseError.toException());
         }
     }
 }

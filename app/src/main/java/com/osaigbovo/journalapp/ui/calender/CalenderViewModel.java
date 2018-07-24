@@ -24,6 +24,7 @@ import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,8 +34,9 @@ import javax.inject.Inject;
 
 public class CalenderViewModel extends ViewModel {
 
-    private static final DatabaseReference CALENDER_REF =
-            FirebaseDatabase.getInstance().getReference().child("journal").child("dates");
+    private String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private DatabaseReference CALENDER_REF =
+            FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("dates");
 
     private final CalenderLiveData liveData = new CalenderLiveData(CALENDER_REF);
 

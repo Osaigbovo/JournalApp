@@ -27,24 +27,30 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.osaigbovo.journalapp.MainActivity;
 import com.osaigbovo.journalapp.R;
 import com.osaigbovo.journalapp.models.CalenderDates;
 import com.osaigbovo.journalapp.models.Home;
+import com.osaigbovo.journalapp.models.Journal;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
 import javax.inject.Inject;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class JournalActivity extends AppCompatActivity implements View.OnClickListener {
+
+    public static final String EXTRA_JOURNAL_KEY = "journal_key";
+    private String mJournalKey;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -52,7 +58,6 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
 
     private final Calendar calendar = Calendar.getInstance();
 
-    private DatePickerDialog picker;
     private TextView mTextViewDate, mTextVIewTime, mTextViewEntry,
             mTextViewLaugh, mTextViewHappy, mTextViewMeh, mTextViewSad, mTextViewCry;
     private ImageButton mImageButtonDate, mImageButtonTime;
@@ -63,12 +68,10 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
     private int[] btn_id
             = {R.id.image_laugh, R.id.image_happy, R.id.image_meh, R.id.image_sad, R.id.image_cry};
 
-    private int mYear, mMonth, mDay, mHour, mMinute;
     private int mYearB, mMonthB, mDayB;
     private String stringDate, stringTime, stringEntry, stringEmotion, stringImage;
-    private static final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-    Intent intent;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +87,18 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             setTitle("Edit Journal");
 
             Home h = intent.getParcelableExtra("Edit");
+            Log.e("ASDFGHJKL;", h.toString());
             mTextViewDate.setText(h.getDate());
             mTextVIewTime.setText(h.getTime());
             mTextViewEntry.setText(h.getEntry());
+        } else {
+
+        }
+
+        // Get post key from intent
+        mJournalKey = getIntent().getStringExtra(EXTRA_JOURNAL_KEY);
+        if (mJournalKey != null) {
+            throw new IllegalArgumentException("Must pass EXTRA_JOURNAL_KEY");
         }
 
         mImageButtonDate.setOnClickListener((View v) -> getDate());
@@ -208,7 +220,6 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
         stringEntry = mTextViewEntry.getText().toString();
 
         if (TextUtils.isEmpty(stringDate)) {
-            mTextViewDate.setError("Select a date!");
             Toast.makeText(JournalActivity.this, "Select a date!", Toast.LENGTH_LONG).show();
             return;
         }
@@ -225,20 +236,18 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             return;
         }
 
-        LiveData<DataSnapshot> liveData = journalViewModel.getDataSnapshotLiveData();
-
-        liveData.observe(this, (DataSnapshot dataSnapshot) -> {
+        LiveData<DataSnapshot> journalLiveData = journalViewModel.getDataSnapshotLiveData();
+        journalLiveData.observe(this, (DataSnapshot dataSnapshot) -> {
             if (dataSnapshot != null) {
-                // write new journal entry
                 CalenderDates mCalenderDates = new CalenderDates(mYearB, mMonthB, mDayB);
-                journalViewModel.writeNewJournal(mCalenderDates, userId, stringDate, stringTime,
-                        stringEntry, stringImage, stringEmotion);
-                //Successful, back to main screen.
+                Journal mJournal = new Journal(stringDate, stringTime, stringEntry, stringImage, stringEmotion);
+
+                journalViewModel.writeNewJournal(mCalenderDates, mJournal);
+
                 Toast.makeText(JournalActivity.this, "Journal...",
                         Toast.LENGTH_SHORT).show();
-                Intent mainActivityIntent = new
-                        Intent(JournalActivity.this, MainActivity.class);
-                startActivity(mainActivityIntent);
+
+                startActivity(new Intent(JournalActivity.this, MainActivity.class));
                 finish();
             }
         });
@@ -256,9 +265,9 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
             mTextViewDate.setText(h.getDate());
             mTextVIewTime.setText(h.getTime());
             mTextViewEntry.setText(h.getEntry());
+        } else {
+            setTitle("Add Journal");
         }
-
-        setTitle("Add Journal");
     }
 
     @Override
@@ -267,40 +276,35 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void getDate() {
-        mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        mMonth = calendar.get(Calendar.MONTH);
-        mYear = calendar.get(Calendar.YEAR);
-        // date picker dialog
-        picker = new DatePickerDialog(JournalActivity.this, (view, year, monthOfYear, dayOfMonth) -> {
-            calendar.set(year, monthOfYear, dayOfMonth);
-            //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
+        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int mMonth = calendar.get(Calendar.MONTH);
+        int mYear = calendar.get(Calendar.YEAR);
 
-            StringBuilder stringBuilder = new StringBuilder();
+        // date picker dialog
+        DatePickerDialog picker
+                = new DatePickerDialog(JournalActivity.this, (view, year, monthOfYear, dayOfMonth) -> {
+            calendar.set(year, monthOfYear, dayOfMonth);
             mYearB = year;
             mMonthB = Integer.parseInt(String.valueOf(monthOfYear), 8) + 1;
             mDayB = dayOfMonth;
-            stringBuilder
-                    .append(calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH))
-                    .append(", ")
-                    .append(calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH))
-                    .append("")
-                    .append(calendar.get(Calendar.DAY_OF_MONTH))
-                    .append(", ")
-                    .append(calendar.get(Calendar.YEAR));
 
-            mTextViewDate.setText(stringBuilder.toString());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy", Locale.ENGLISH);
+            mTextViewDate.setText(simpleDateFormat.format(calendar.getTime()));
         }, mYear, mMonth, mDay);
+
         picker.show();
     }
 
     private void getTime() {
         // Get Current Time
-        mHour = calendar.get(Calendar.HOUR_OF_DAY);
-        mMinute = calendar.get(Calendar.MINUTE);
+        int mHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int mMinute = calendar.get(Calendar.MINUTE);
 
         // Launch Time Picker Dialog
         TimePickerDialog timePickerDialog = new TimePickerDialog(JournalActivity.this,
-                (view, hourOfDay, minute) -> mTextVIewTime.setText(hourOfDay + ":" + minute), mHour, mMinute, false);
+                (view, hourOfDay, minute) -> mTextVIewTime.setText(String.valueOf(hourOfDay + ":" + minute)),
+                mHour, mMinute, false);
+
         timePickerDialog.show();
     }
 
