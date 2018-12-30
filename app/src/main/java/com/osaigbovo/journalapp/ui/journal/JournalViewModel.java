@@ -15,13 +15,6 @@
  */
 package com.osaigbovo.journalapp.ui.journal;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +26,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 
 public class JournalViewModel extends ViewModel {
 

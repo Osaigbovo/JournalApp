@@ -15,14 +15,13 @@
  */
 package com.osaigbovo.journalapp.di;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
-
 import com.osaigbovo.journalapp.ui.calender.CalenderViewModel;
 import com.osaigbovo.journalapp.ui.home.HomeListViewModel;
 import com.osaigbovo.journalapp.ui.journal.JournalViewModel;
 import com.osaigbovo.journalapp.viewmodel.JournalViewModelFactory;
 
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;

@@ -15,15 +15,6 @@
  */
 package com.osaigbovo.journalapp.ui.calender;
 
-import android.arch.core.util.Function;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.Transformations;
-import android.arch.lifecycle.ViewModel;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +22,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.osaigbovo.journalapp.models.CalenderDates;
 
 import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.arch.core.util.Function;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
 
 public class CalenderViewModel extends ViewModel {
 

@@ -2,7 +2,6 @@ package com.osaigbovo.journalapp.ui.signin;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +19,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.osaigbovo.journalapp.MainActivity;
 import com.osaigbovo.journalapp.R;
 import com.osaigbovo.journalapp.models.User;
+
+import androidx.annotation.NonNull;
 
 public class SignInActivity extends BaseActivity implements View.OnClickListener {
 

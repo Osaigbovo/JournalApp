@@ -17,15 +17,8 @@ package com.osaigbovo.journalapp.ui.journal;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +26,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.osaigbovo.journalapp.MainActivity;
 import com.osaigbovo.journalapp.R;
@@ -45,6 +39,13 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import javax.inject.Inject;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class JournalActivity extends AppCompatActivity implements View.OnClickListener {

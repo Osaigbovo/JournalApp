@@ -15,12 +15,6 @@
  */
 package com.osaigbovo.journalapp.ui.home;
 
-import android.arch.core.util.Function;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Transformations;
-import android.arch.lifecycle.ViewModel;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +29,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.arch.core.util.Function;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
 
 public class HomeListViewModel extends ViewModel {
     private static String TAG = "HomeListViewModel";

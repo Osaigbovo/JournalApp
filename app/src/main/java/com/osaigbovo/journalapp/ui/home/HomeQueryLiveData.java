@@ -15,7 +15,6 @@
  */
 package com.osaigbovo.journalapp.ui.home;
 
-import android.arch.lifecycle.LiveData;
 import android.os.Handler;
 import android.util.Log;
 
@@ -29,6 +28,8 @@ import com.osaigbovo.journalapp.models.Home;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.lifecycle.LiveData;
 
 public class HomeQueryLiveData extends LiveData<DataSnapshot> {
 

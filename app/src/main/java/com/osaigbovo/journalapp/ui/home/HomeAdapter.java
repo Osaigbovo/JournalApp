@@ -16,8 +16,6 @@
 package com.osaigbovo.journalapp.ui.home;
 
 import android.content.Intent;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +27,9 @@ import com.osaigbovo.journalapp.models.Home;
 import com.osaigbovo.journalapp.ui.journal.JournalActivity;
 
 import java.util.List;
+
+import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
