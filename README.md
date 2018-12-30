@@ -1,6 +1,6 @@
 # JournalApp
 
-Here is a fully functional and colorful android app which I made from scratch for Andela-Google-Udacity Android Developer Scholarship. 
+Here is a fully functional and colorful android app. 
 This app reveals the power of Firebase, Dagger, and adaptive UI both for phone and tablet devices.
 
 # Features
