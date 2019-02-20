@@ -6,7 +6,7 @@ This app reveals the power of Firebase, Dagger, and adaptive UI both for phone a
 # Features
 With the app, you can:
 
-Write down how you day went, putting donw precious thought to a secure archive.
+Write down how you day went, putting down precious thoughts to a secure cloud.
 Modify and delete your journal entries.
 See the date you filled in an entry.
 This app requires a Gmail account for login.
